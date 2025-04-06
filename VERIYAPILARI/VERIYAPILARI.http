@@ -1,0 +1,6 @@
+@VERIYAPILARI_HostAddress = http://localhost:5239
+
+GET {{VERIYAPILARI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
