@@ -14,7 +14,6 @@ namespace VERIYAPILARI.Controllers
     [ApiController]
     public class ValuesController(ApplicationDBContext context) : ControllerBase
     {
-        // Use a thread-safe collection instead of a static list
         private readonly ApplicationDBContext _context = context;
 
         [HttpGet("GetEmployees")]
@@ -24,16 +23,9 @@ namespace VERIYAPILARI.Controllers
                     .Include(e => e.Department)  
                     .Include(e => e.Manager)  
                     .ToListAsync();
-            var employeeDtos = employees.Select(e => new EmployeeDto
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Position = e.Position,
-                DepartmentName = e.Department?.Name,
-                ManagerId = e.ManagerId,
-                ManagerName = e.Manager?.Name,
-                Subordinates = new List<EmployeeDto>() 
-            }).ToList();
+
+            var employeeDtos = employees.Select(e =>
+            MapEmployeeToDto(e)).ToList();
 
             return Ok(employeeDtos);
         }
@@ -44,7 +36,7 @@ namespace VERIYAPILARI.Controllers
             var employee = await _context.Employees
                 .Include(e => e.Manager)
                 .Include(e => e.Department)
-                .Include(e => e.Subordinates)
+                .Include(e => e.Subordinates!)
                 .ThenInclude(e => e.Department)
                 .FirstOrDefaultAsync(e => e.Id == id); 
             if (employee == null)
@@ -71,7 +63,7 @@ namespace VERIYAPILARI.Controllers
                     Position = sub.Position,
                     DepartmentName = sub.Department?.Name,
                     ManagerId = sub.ManagerId,
-                    ManagerName = employee.Name, // or sub.Manager?.Name
+                    ManagerName = employee.Name, 
                     Subordinates = new List<EmployeeDto>() // To avoid deep recursion
                 }).ToList() ?? new()
             };
@@ -83,8 +75,7 @@ namespace VERIYAPILARI.Controllers
             if (newEmployee == null)
                 return BadRequest("Employee data is required.");
 
-            // Handle empty list case
-            newEmployee.StartDate = DateTime.UtcNow; // Auto-assign start date
+            newEmployee.StartDate = DateTime.UtcNow; 
             _context.Employees.Add(newEmployee);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetEmployeeByID), new { id = newEmployee.Id }, newEmployee);
@@ -131,19 +122,6 @@ namespace VERIYAPILARI.Controllers
             return NoContent();
         }
   
-        private async Task<List<Employee>> GetSubordinatesRecursive(int managerId)
-        {
-            var employees = await _context.Employees
-                .Where(e => e.ManagerId == managerId)
-                .ToListAsync();
-
-            foreach (var emp in employees)
-            {
-                emp.Subordinates = await GetSubordinatesRecursive(emp.Id);
-            }
-
-            return employees;
-        }
         [HttpGet("GetDepartmentsEmployees/{id}")]
         public async Task<IActionResult> GetDepartmentsEmployees(int id)
         {
@@ -158,7 +136,7 @@ namespace VERIYAPILARI.Controllers
                 return NotFound();
             }
 
-            // You can return only the employees and their managers (without subordinates)
+            
             var departmentDtos = departments.Select(d => new
             {
                 DepartmentId = d.Id,
@@ -168,8 +146,8 @@ namespace VERIYAPILARI.Controllers
                     e.Id,
                     e.Name,
                     e.Position,
-                    ManagerName = e.Manager?.Name,  // Only include the manager name
-                    ManagerId = e.ManagerId  // Include manager id (or can skip if not needed)
+                    ManagerName = e.Manager?.Name, 
+                    ManagerId = e.ManagerId  
 
                 }).ToList()
             }).ToList();
@@ -226,24 +204,15 @@ namespace VERIYAPILARI.Controllers
         {
             var managers = await _context.Employees
                 .Where(e => e.Subordinates.Any())
-                .Include(e => e.Department)  // Optionally include Department as well
-                .Include(e => e.Manager)  // Include Manager in the query
+                .Include(e => e.Department)  
+                .Include(e => e.Manager)  
                 .ToListAsync();
 
             if (managers == null || !managers.Any())
             {
                 return NotFound("No managers found.");
             }
-            var employeeDtos = managers.Select(e => new EmployeeDto
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Position = e.Position,
-                DepartmentName = e.Department?.Name,
-                ManagerId = e.ManagerId,
-                ManagerName = e.Manager?.Name,
-                Subordinates = new List<EmployeeDto>() // leave empty or load separately if needed
-            }).ToList();
+            var employeeDtos = managers.Select(e => MapEmployeeToDto(e)).ToList();
 
             return Ok(employeeDtos);
         }
