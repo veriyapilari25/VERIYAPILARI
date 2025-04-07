@@ -21,9 +21,8 @@ namespace VERIYAPILARI.Controllers
         public async Task<ActionResult<List<Employee>>> GetEmployees()
         {
             var employees = await _context.Employees
-                    .Include(e => e.Department)  // Optionally include Department as well
-                    //.Include(e => e.Subordinates)  // Optionally include Subordinates if needed
-                    .Include(e => e.Manager)  // Include Manager in the query
+                    .Include(e => e.Department)  
+                    .Include(e => e.Manager)  
                     .ToListAsync();
             var employeeDtos = employees.Select(e => new EmployeeDto
             {
@@ -33,7 +32,7 @@ namespace VERIYAPILARI.Controllers
                 DepartmentName = e.Department?.Name,
                 ManagerId = e.ManagerId,
                 ManagerName = e.Manager?.Name,
-                Subordinates = new List<EmployeeDto>() // leave empty or load separately if needed
+                Subordinates = new List<EmployeeDto>() 
             }).ToList();
 
             return Ok(employeeDtos);
@@ -100,7 +99,7 @@ namespace VERIYAPILARI.Controllers
 
             employee.Name = updatedEmployee.Name;
             employee.Position = updatedEmployee.Position;
-            employee.StartDate = updatedEmployee.StartDate; // You might want to use the provided date instead of UTC now
+            employee.StartDate = updatedEmployee.StartDate; 
             employee.DepartmentId = updatedEmployee.DepartmentId;
             employee.Department = updatedEmployee.Department;
             if (updatedEmployee.ManagerId != employee.ManagerId)
@@ -149,9 +148,9 @@ namespace VERIYAPILARI.Controllers
         public async Task<IActionResult> GetDepartmentsEmployees(int id)
         {
             var departments = await _context.Departments
-                                    .Where(d => d.Id == id) // Assuming you want to fetch by Department Id
-                                    .Include(d => d.Employees)  // Include employees within the department
-                                    .ThenInclude(e => e.Manager)  // Include the manager of each employee
+                                    .Where(d => d.Id == id) 
+                                    .Include(d => d.Employees)  
+                                    .ThenInclude(e => e.Manager)  
                                     .ToListAsync();
 
             if (departments == null || !departments.Any())
@@ -248,6 +247,8 @@ namespace VERIYAPILARI.Controllers
 
             return Ok(employeeDtos);
         }
+
+
 
 
     }
