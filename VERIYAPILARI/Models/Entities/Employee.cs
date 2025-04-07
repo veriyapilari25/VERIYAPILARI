@@ -9,7 +9,7 @@
         // Self-referencing relationship for hierarchical structure
         public int? ManagerId { get; set; }
         public Employee? Manager { get; set; }
-        public ICollection<Employee>? Subordinates { get; set; } = new List<Employee>();
+        public ICollection<Employee> Subordinates { get; set; } = new List<Employee>();
 
         public int? DepartmentId { get; set; }
         public Department? Department { get; set; }
