@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Concurrent;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Transactions;
 using VERIYAPILARI.Data;
@@ -20,8 +21,8 @@ namespace VERIYAPILARI.Controllers
         public async Task<ActionResult<List<Employee>>> GetEmployees()
         {
             var employees = await _context.Employees
-                    .Include(e => e.Department)  
-                    .Include(e => e.Manager)  
+                    .Include(e => e.Department)
+                    .Include(e => e.Manager)
                     .ToListAsync();
 
             var employeeDtos = employees.Select(e =>
@@ -29,6 +30,28 @@ namespace VERIYAPILARI.Controllers
 
             return Ok(employeeDtos);
         }
+
+        [HttpGet("GetAllEmployeesWithSubordinates")]
+        public async Task<IActionResult> GetAllEmployeesWithSubordinates()
+        {
+            var employees = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Manager)
+                .ToListAsync();
+
+            var employeeDtos = new List<EmployeeDto>();
+
+            foreach (var employee in employees)
+            {
+                var dto = MapEmployeeToDto(employee);
+                dto.Subordinates = await GetSubordinatesDtoRecursive(employee.Id);
+                employeeDtos.Add(dto);
+            }
+
+            return Ok(employeeDtos);
+        }
+
+
 
         [HttpGet("GetEmployeeByID/{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeByID(int id)
@@ -189,14 +212,21 @@ namespace VERIYAPILARI.Controllers
         [HttpGet("GetAllSubordinates/{managerId}")]
         public async Task<IActionResult> GetAllSubordinates(int managerId)
         {
-            var subordinates = await GetSubordinatesDtoRecursive(managerId);
+            var manager = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Manager)
+                .FirstOrDefaultAsync(e => e.Id == managerId);
 
-            if (!subordinates.Any())
+
+            if (manager == null)
             {
-                return NotFound("No employees found under this manager.");
+                return NotFound("Manager not found.");
             }
 
-            return Ok(subordinates);
+            var managerDto = MapEmployeeToDto(manager);
+            managerDto.Subordinates = await GetSubordinatesDtoRecursive(managerId);
+
+            return Ok(managerDto);
         }
 
         [HttpGet("GetAllManagers")]
@@ -216,6 +246,73 @@ namespace VERIYAPILARI.Controllers
 
             return Ok(employeeDtos);
         }
+
+        [HttpGet("GetEmailByName")]
+        public async Task<IActionResult> GetEmailByName(string name)
+        {
+            var employees = await _context.Employees.ToListAsync();
+
+            Dictionary<string, Employee> emailHashTable = new();
+            foreach(var emp in employees)
+            {
+                if(!String.IsNullOrEmpty(name))
+                    emailHashTable[emp.Name] = emp;
+            }
+            if(emailHashTable.TryGetValue(name, out var result))
+            {
+                return Ok(result.Email);
+            }
+            return NotFound("The employee you searching for not found!");
+        }
+
+
+        public class GraphNode
+        {
+            public int Id { get; set; }
+            public string? Name { get; set; }
+
+            public List<GraphNode>? Subordinates { get; set; } = new();
+
+        }
+
+        public class GraphBuilder
+        {
+            public Dictionary<int, GraphNode> BuildEmployeeGraph(List<Employee> employees)
+            {
+                var graph =new Dictionary<int, GraphNode>();
+                foreach(var emp in employees)
+                {
+                    graph[emp.Id] = new GraphNode
+                    {
+                        Id = emp.Id,
+                        Name = emp.Name
+
+                    };
+
+                }
+
+                foreach(var emp in employees)
+                {
+                    if (emp.ManagerId.HasValue && graph.ContainsKey(emp.ManagerId.Value))
+                    {
+                        var managerNode = graph[emp.ManagerId.Value];
+                        managerNode.Subordinates.Add(graph[emp.Id]);
+                    }
+                }
+                return graph;
+            }
+        }
+
+        [HttpGet("EmployeeGraph")]
+        public async Task<IActionResult> GetEmployeeGraph()
+        {
+            var employees = await _context.Employees.ToListAsync();
+            var graphBuilder = new GraphBuilder();
+            var graph = graphBuilder.BuildEmployeeGraph(employees);
+
+            return Ok(graph.Values);
+        }
+
 
 
 
