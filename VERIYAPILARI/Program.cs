@@ -17,7 +17,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 
 
 var app = builder.Build();
-
+app.UseStaticFiles();
+app.UseDefaultFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
