@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VERIYAPILARI.Models.Entities;
+using VERIYAPILARI.Models;
 
 namespace VERIYAPILARI.Data
 {
@@ -12,6 +13,8 @@ namespace VERIYAPILARI.Data
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Department> Departments { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
@@ -42,6 +45,17 @@ namespace VERIYAPILARI.Data
                 new Employee { Id = 6, Name = "Frank", ManagerId = 5, DepartmentId = 3, Position = "HR Specialist", StartDate = new DateTime(2023, 4, 1) }
             );
 
+            // Add initial admin user
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Username = "admin",
+                    PasswordHash = "admin123", // In a real application, this should be hashed
+                    Email = "admin@company.com",
+                    Role = "Admin"
+                }
+            );
         }
     }
 }

@@ -1,12 +1,103 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organization Chart</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        .main-org-container {
+            background: #fff;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            max-width: 1400px;
+            width: 100%;
+            margin: 2.5rem auto 2rem auto;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .org-header-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem auto;
+            box-shadow: 0 2px 8px rgba(172, 182, 229, 0.2);
+        }
+        .org-header-logo i {
+            font-size: 2rem;
+            color: #007bff;
+        }
+        .org-header-title {
+            font-weight: 600;
+            font-size: 2rem;
+            color: #222;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .org-header-desc {
+            font-size: 1.1rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .btn, .btn-primary, .btn-secondary, .btn-danger, .btn-outline-secondary {
+            font-family: 'Poppins', Arial, sans-serif;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
+            color: #fff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
+        }
+        .btn-outline-secondary {
+            border: 1.5px solid #e0e0e0;
+            background: #fff;
+            color: #007bff;
+        }
+        .btn-outline-secondary:hover {
+            background: #e3f0ff;
+        }
+        .form-control, .search-box input, select {
+            border-radius: 8px;
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 1rem;
+        }
+        .header {
+            background: none;
+            box-shadow: none;
+            margin-bottom: 0;
+            padding: 0;
+        }
+        .container {
+            background: none;
+            box-shadow: none;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
+        }
         :root {
             --primary-color: #3498db;
             --secondary-color: #2980b9;
@@ -103,21 +194,6 @@
                 color: #555;
             }
 
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-            .form-control:focus {
-                border-color: var(--primary-color);
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-            }
-
         .form-actions {
             text-align: right;
             margin-top: 20px;
@@ -126,46 +202,22 @@
             gap: 10px;
         }
 
-        .btn {
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-            .btn-primary:hover {
-                background-color: var(--secondary-color);
-            }
-
-        .btn-secondary {
-            background-color: #e0e0e0;
-            color: #333;
-        }
-
-            .btn-secondary:hover {
-                background-color: #ccc;
-            }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-            .btn-danger:hover {
-                background-color: #c0392b;
-            }
-
-        /* Action buttons for the main view */
         .action-buttons {
-            margin-bottom: 20px;
+            margin-bottom: 1.2rem;
             text-align: right;
+            display: flex;
+            gap: 0.7rem;
+            justify-content: flex-end;
+            padding: 0.6rem 0 0.6rem 0;
+        }
+
+        .action-buttons .btn,
+        .action-buttons .btn-primary,
+        .action-buttons .btn-outline-secondary {
+            padding: 0.55rem 1.2rem;
+            font-size: 1.03rem;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
         }
 
         .employee-actions {
@@ -213,7 +265,6 @@
                 background-color: #c0392b;
             }
 
-        /* Toast notification */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -243,7 +294,6 @@
                 opacity: 1;
             }
 
-        /* Confirmation Modal */
         .confirm-modal {
             display: none;
             position: fixed;
@@ -277,7 +327,6 @@
             gap: 15px;
         }
 
-        /* Position employee-actions */
         .employee {
             position: relative;
         }
@@ -288,7 +337,6 @@
                 right: 8px;
             }
 
-        /* Loading spinner */
         .spinner {
             display: inline-block;
             width: 20px;
@@ -303,31 +351,6 @@
             to {
                 transform: rotate(360deg);
             }
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-            .header h1 {
-                font-size: 2.5rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .header p {
-                font-size: 1.1rem;
-                opacity: 0.9;
-            }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
         }
 
         .controls {
@@ -414,7 +437,52 @@
             min-height: 600px;
         }
 
-        /* Tree View Styles */
+        #undo-delete-button {
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+            #undo-delete-button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+            #undo-delete-button .spinner {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: #fff;
+                animation: spin 1s linear infinite;
+                margin-right: 5px;
+            }
+
+            #undo-delete-button:hover:not(:disabled) {
+                background-color: #6c757d;
+                color: white;
+            }
+
+            #undo-delete-button .undo-count {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                width: 18px;
+                height: 18px;
+                background-color: #28a745;
+                color: white;
+                border-radius: 50%;
+                font-size: 10px;
+                margin-left: 5px;
+                font-weight: bold;
+            }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .tree {
             display: flex;
             flex-direction: column;
@@ -517,7 +585,6 @@
                         transition: all 0.3s;
                     }
 
-        /* Card View Styles */
         .grid-view {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -608,6 +675,22 @@
             font-weight: bold;
         }
 
+        .skills-list {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .skill-badge {
+            background: #e3f0ff;
+            color: #007bff;
+            border-radius: 12px;
+            padding: 2px 10px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
         .stats {
             display: flex;
             gap: 20px;
@@ -684,46 +767,51 @@
                 animation: spin 1s infinite linear;
             }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .zoom-controls {
             position: fixed;
             bottom: 20px;
             right: 20px;
             display: flex;
             gap: 10px;
+            z-index: 2000;
+            flex-wrap: nowrap;
         }
 
         .zoom-btn {
+            z-index: 2010;
+            position: relative;
+            flex-shrink: 0;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
+            background: linear-gradient(135deg, #4f8cff 0%, #38e8fa 100%);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s;
+            box-shadow: 0 2px 10px rgba(79, 140, 255, 0.18);
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
         }
 
             .zoom-btn:hover {
-                background-color: var(--secondary-color);
-                transform: scale(1.1);
+                background: linear-gradient(135deg, #38e8fa 0%, #4f8cff 100%);
+                transform: scale(1.12);
+                box-shadow: 0 4px 16px rgba(56, 232, 250, 0.18);
             }
 
-        /* Tooltip styles */
+            /* Make the reset button a different accent color */
+            /* #zoom-reset.zoom-btn {
+                background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+                color: #fff;
+            }
+
+            #zoom-reset.zoom-btn:hover {
+                background: linear-gradient(135deg, #feb47b 0%, #ff7e5f 100%);
+            } */
+
         .tooltip {
             position: relative;
             display: inline-block;
@@ -762,7 +850,15 @@
                 opacity: 1;
             }
 
-        /* Responsive */
+        .select2-container--default .select2-selection--multiple {
+            min-height: 38px;
+        }
+
+        .select2-container--default .select2-selection {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
         @media (max-width: 768px) {
             .controls {
                 flex-direction: column;
@@ -785,20 +881,118 @@
                 min-width: 100%;
             }
         }
+
+        #employee-modal .modal-content {
+            max-width: 420px;
+            width: 95%;
+            margin: 5% auto;
+            padding: 28px 24px 18px 24px;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.18);
+        }
+
+        #employee-modal .modal-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        #employee-modal .modal-header h2 {
+            font-size: 1.3rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        #employee-modal .form-group {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #employee-modal .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        #employee-modal .form-control {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background: #fafbfc;
+        }
+
+        #employee-modal .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52,152,219,0.13);
+        }
+
+        #employee-modal .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        #employee-modal .form-actions button,
+        .confirm-actions button {
+            padding: 0.45rem 1.1rem;
+            font-size: 0.98rem;
+            border-radius: 5px;
+            font-weight: 600;
+            min-width: 90px;
+            margin-left: 0.3rem;
+            margin-right: 0.3rem;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+            border: none;
+            transition: background 0.18s, color 0.18s;
+        }
+        #manager.form-control {
+            max-height: 160px;
+            overflow-y: auto;
+            display: block;
+        }
+
+        .confirm-actions .btn-danger {
+            background: #e74c3c !important;
+            color: #fff !important;
+            border: none !important;
+            box-shadow: 0 2px 8px rgba(231,76,60,0.15);
+        }
+        .confirm-actions .btn-danger:hover {
+            background: #c0392b !important;
+            color: #fff !important;
+        }
+
+        .action-buttons.admin-only {
+            display: none;
+        }
+
+        .employee-actions.admin-only {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="container">
-            <h1>Organization Chart</h1>
-            <p>View and explore your company's organizational structure</p>
+    <div class="main-org-container">
+        <div class="org-header-logo">
+            <i class="fa-solid fa-users"></i>
         </div>
-    </div>
-
-    <div class="container">
+        <div class="org-header-title">Organization Chart</div>
+        <div class="org-header-desc">View and explore your company's organizational structure</div>
         <div class="action-buttons">
             <button class="btn btn-primary" id="add-employee-btn">
                 <i class="fas fa-plus"></i> Add Employee
+            </button>
+            <button class="btn btn-outline-secondary" id="undo-delete-button" onclick="undoDeleteEmployee()" disabled>
+                <i class="fas fa-undo"></i> Undo Delete
             </button>
         </div>
         <div class="stats">
@@ -811,7 +1005,6 @@
                     <p>Total Employees</p>
                 </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-icon departments">
                     <i class="fas fa-building"></i>
@@ -821,7 +1014,6 @@
                     <p>Departments</p>
                 </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-icon managers">
                     <i class="fas fa-user-tie"></i>
@@ -832,13 +1024,11 @@
                 </div>
             </div>
         </div>
-
         <div class="controls">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="search-input" placeholder="Search by name, position, or department...">
+                <input type="text" id="search-input" placeholder="Search by name, skill, or department...">
             </div>
-
             <div class="view-options">
                 <button class="view-btn active" id="tree-view-btn">
                     <i class="fas fa-sitemap"></i> Tree View
@@ -848,26 +1038,20 @@
                 </button>
             </div>
         </div>
-
         <div class="org-chart">
             <div id="loading" class="loading">
                 <i class="fas fa-spinner"></i> Loading organization data...
             </div>
-
             <div id="tree-container" class="tree" style="display: none;"></div>
             <div id="grid-container" class="grid-view" style="display: none;"></div>
-
             <div id="error-message" class="error-message" style="display: none;"></div>
         </div>
     </div>
-
     <div class="zoom-controls">
         <button class="zoom-btn" id="zoom-in"><i class="fas fa-plus"></i></button>
         <button class="zoom-btn" id="zoom-out"><i class="fas fa-minus"></i></button>
-        <button class="zoom-btn" id="zoom-reset"><i class="fas fa-sync-alt"></i></button>
+        <button type="button" class="zoom-btn" id="zoom-reset"><i class="fas fa-sync-alt"></i></button>
     </div>
-
-    <!-- Add Employee Modal -->
     <div id="employee-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="close-employee-modal">&times;</span>
@@ -887,16 +1071,20 @@
                 <div class="form-group">
                     <label for="department">Department</label>
                     <select id="department" class="form-control" required>
-                        <!-- Will be populated from API -->
                         <option value="">Select Department</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="manager">Manager</label>
                     <select id="manager" class="form-control">
-                        <!-- Will be populated from API -->
                         <option value="">No Manager (Top Level)</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <select id="skills" class="form-control" multiple>
+                    </select>
+                    <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple skills</small>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
@@ -905,8 +1093,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Confirmation Modal -->
     <div id="confirm-modal" class="confirm-modal">
         <div class="confirm-content">
             <div class="confirm-message">Are you sure you want to delete this employee?</div>
@@ -916,16 +1102,74 @@
             </div>
         </div>
     </div>
-
-    <!-- Toast Notification -->
     <div id="toast" class="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toast-message"></span>
     </div>
-
+    <div id="debug-panel" style="position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; background: rgba(0,0,0,0.8); color: #00ff00; padding: 10px; font-family: monospace; font-size: 12px; overflow: auto; z-index: 9999; display: none;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <strong>Debug Console</strong>
+            <button onclick="document.getElementById('debug-panel').style.display='none'" style="background: none; border: none; color: white; cursor: pointer;">×</button>
+        </div>
+        <div id="debug-log"></div>
+    </div>
     <script>
+        let isAdmin = false;
+
+        async function checkAdminStatus() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        console.error('No auth token found');
+        isAdmin = false;
+        updateUIForAdminStatus();
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/Auth/CheckAdminStatus', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.status === 401) {
+            console.error('Unauthorized - Please login');
+            isAdmin = false;
+            updateUIForAdminStatus();
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Failed to check admin status');
+        }
+
+        const data = await response.json();
+        isAdmin = data.isAdmin;
+        updateUIForAdminStatus();
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        isAdmin = false;
+        updateUIForAdminStatus();
+    }
+}
+
+        function updateUIForAdminStatus() {
+            const actionButtons = document.querySelector('.action-buttons');
+            const employeeActions = document.querySelectorAll('.employee-actions');
+            
+            if (isAdmin) {
+                actionButtons.classList.remove('admin-only');
+                employeeActions.forEach(action => action.classList.remove('admin-only'));
+            } else {
+                actionButtons.classList.add('admin-only');
+                employeeActions.forEach(action => action.classList.add('admin-only'));
+            }
+        }
+
+        // Call this when the page loads
+        checkAdminStatus();
+
         document.addEventListener('DOMContentLoaded', function () {
-            // View switching
             const treeViewBtn = document.getElementById('tree-view-btn');
             const gridViewBtn = document.getElementById('grid-view-btn');
             const treeContainer = document.getElementById('tree-container');
@@ -939,26 +1183,32 @@
             const confirmDelete = document.getElementById('confirm-delete');
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toast-message');
+            const undoButton = document.getElementById('undo-delete-button');
 
             let departments = [];
             let employees = [];
             let currentEmployeeId = null;
 
-            // Zoom controls
+            checkUndoAvailability();
+            setInterval(checkUndoAvailability, 30000);
+
             const zoomInBtn = document.getElementById('zoom-in');
             const zoomOutBtn = document.getElementById('zoom-out');
             const zoomResetBtn = document.getElementById('zoom-reset');
             let currentZoom = 1;
 
-            // Search functionality
             const searchInput = document.getElementById('search-input');
 
-            // Statistics elements
             const employeeCountElement = document.getElementById('employee-count');
             const departmentCountElement = document.getElementById('department-count');
             const managerCountElement = document.getElementById('manager-count');
 
-            // Switch to tree view
+            if (undoButton) {
+                undoButton.addEventListener('click', function() {
+                    undoDeleteEmployee();
+                });
+            }
+
             treeViewBtn.addEventListener('click', function () {
                 treeViewBtn.classList.add('active');
                 gridViewBtn.classList.remove('active');
@@ -966,7 +1216,6 @@
                 gridContainer.style.display = 'none';
             });
 
-            // Switch to grid view
             gridViewBtn.addEventListener('click', function () {
                 gridViewBtn.classList.add('active');
                 treeViewBtn.classList.remove('active');
@@ -974,7 +1223,6 @@
                 treeContainer.style.display = 'none';
             });
 
-            // Zoom functionality
             zoomInBtn.addEventListener('click', function () {
                 if (currentZoom < 2) {
                     currentZoom += 0.1;
@@ -989,50 +1237,60 @@
                 }
             });
 
-            zoomResetBtn.addEventListener('click', function () {
-                currentZoom = 1;
-                applyZoom();
-            });
+            if (zoomResetBtn) {
+                zoomResetBtn.addEventListener('click', function () {
+                    currentZoom = 1;
+                    applyZoom();
+                });
+            }
 
             function applyZoom() {
                 treeContainer.style.transform = `scale(${currentZoom})`;
                 treeContainer.style.transformOrigin = 'top center';
             }
 
-            searchInput.addEventListener('input', function () {
+            searchInput.addEventListener('input', async function () {
                 const searchTerm = this.value.toLowerCase();
 
-                // First reset all highlighting to ensure clean state
                 resetAllHighlighting();
 
                 if (searchTerm === '') {
-                    // If search is cleared, just reset everything and return
+                    resetGridFiltering();
                     return;
                 }
 
+                const matchingEmployeesBySkill = await fetchEmployeesBySkill(searchTerm);
+                const skillMatchedEmployeeIds = new Set(matchingEmployeesBySkill.map(e => e.id));
+
                 if (treeViewBtn.classList.contains('active')) {
-                    // Search in tree view
                     const employeeNodes = treeContainer.querySelectorAll('.employee');
                     employeeNodes.forEach(node => {
-                        const name = node.querySelector('.name').textContent.toLowerCase();
-                        const position = node.querySelector('.position').textContent.toLowerCase();
-                        const department = node.querySelector('.department').textContent.toLowerCase();
+                        const name = node.querySelector('.name')?.textContent.toLowerCase() || '';
+                        const position = node.querySelector('.position')?.textContent.toLowerCase() || '';
+                        const department = node.querySelector('.department')?.textContent.toLowerCase() || '';
+                        const employeeId = parseInt(node.dataset.id);
 
-                        if (name.includes(searchTerm) || position.includes(searchTerm) || department.includes(searchTerm)) {
+                        const textMatch = name.includes(searchTerm) || position.includes(searchTerm) || department.includes(searchTerm);
+                        const skillMatch = skillMatchedEmployeeIds.has(employeeId);
+
+                        if (textMatch || skillMatch) {
                             node.style.backgroundColor = '#fffde7';
                             node.style.borderColor = '#ffd54f';
                             node.dataset.highlighted = 'search';
                         }
                     });
                 } else {
-                    // Search in grid view
                     const employeeCards = gridContainer.querySelectorAll('.employee-card');
                     employeeCards.forEach(card => {
-                        const name = card.querySelector('.name').textContent.toLowerCase();
-                        const position = card.querySelector('.position').textContent.toLowerCase();
-                        const department = card.querySelector('.department').textContent.toLowerCase();
+                        const name = card.querySelector('.name')?.textContent.toLowerCase() || '';
+                        const position = card.querySelector('.position')?.textContent.toLowerCase() || '';
+                        const department = card.querySelector('.department')?.textContent.toLowerCase() || '';
+                        const employeeId = parseInt(card.dataset.id);
 
-                        if (name.includes(searchTerm) || position.includes(searchTerm) || department.includes(searchTerm)) {
+                        const textMatch = name.includes(searchTerm) || position.includes(searchTerm) || department.includes(searchTerm);
+                        const skillMatch = skillMatchedEmployeeIds.has(employeeId);
+
+                        if (textMatch || skillMatch) {
                             card.style.display = 'flex';
                         } else {
                             card.style.display = 'none';
@@ -1041,9 +1299,21 @@
                 }
             });
 
-            // Add a function to reset all highlighting across the tree
+            async function fetchEmployeesBySkill(skill) {
+                try {
+                    const response = await fetch(`/api/Values/GetEmployeesBySkill?skill=${encodeURIComponent(skill)}`);
+                    if (!response.ok) {
+                        return [];
+                    }
+                    const employees = await response.json();
+                    return employees;
+                } catch (error) {
+                    console.error('Error fetching employees by skill:', error);
+                    return [];
+                }
+            }
+
             function resetAllHighlighting() {
-                // Reset all employee nodes to their default styles
                 const allEmployeeNodes = document.querySelectorAll('#tree-container .employee');
                 allEmployeeNodes.forEach(node => {
                     node.style.backgroundColor = '';
@@ -1052,14 +1322,19 @@
                     node.dataset.highlighted = '';
                 });
 
-                // Also reset grid view cards if needed
                 const allEmployeeCards = document.querySelectorAll('#grid-container .employee-card');
                 allEmployeeCards.forEach(card => {
                     card.style.display = 'flex';
                 });
             }
 
-            // Fetch employee tree data from the API
+            function resetGridFiltering() {
+                const allEmployeeCards = document.querySelectorAll('#grid-container .employee-card');
+                allEmployeeCards.forEach(card => {
+                    card.style.display = 'flex';
+                });
+            }
+
             fetchEmployeeTree();
 
             function fetchEmployeeTree() {
@@ -1102,42 +1377,35 @@
                 const employeeNodes = document.querySelectorAll('#tree-container .employee');
 
                 employeeNodes.forEach(node => {
-                    // Add mouseenter event listener
                     node.addEventListener('mouseenter', function () {
                         const employeeId = this.dataset.id;
                         highlightEmployeeAndSubordinates(employeeId);
                     });
 
-                    // Add mouseleave event listener
                     node.addEventListener('mouseleave', function () {
                         resetHighlighting();
                     });
                 });
             }
 
-            // Function to highlight an employee and all their subordinates
             function highlightEmployeeAndSubordinates(employeeId) {
-                // First reset any existing highlighting
                 resetHighlighting();
 
-                // Get the employee node
                 const employeeNode = document.querySelector(`.employee[data-id="${employeeId}"]`);
                 if (!employeeNode) return;
 
-                // Highlight the employee node
-                employeeNode.style.backgroundColor = '#4da6ff'; // Lighter blue
-                employeeNode.style.borderColor = '#0066cc'; // Darker blue
+                employeeNode.style.backgroundColor = '#4da6ff';
+                employeeNode.style.borderColor = '#0066cc';
                 employeeNode.style.color = 'white';
 
-                // Find all subordinates in the tree structure
                 const parentLi = employeeNode.closest('li');
                 if (parentLi) {
                     const subordinatesList = parentLi.querySelector('ul');
                     if (subordinatesList) {
                         const subordinateNodes = subordinatesList.querySelectorAll('.employee');
                         subordinateNodes.forEach(node => {
-                            node.style.backgroundColor = '#4da6ff'; // Lighter blue
-                            node.style.borderColor = '#0066cc'; // Darker blue
+                            node.style.backgroundColor = '#4da6ff';
+                            node.style.borderColor = '#0066cc';
                             node.style.color = 'white';
                         });
                     }
@@ -1155,7 +1423,6 @@
             function renderOrganizationTree(data) {
                 const treeContainer = document.getElementById('tree-container');
 
-                // Create the tree structure
                 const html = createTreeHTML(data);
                 treeContainer.innerHTML = html;
             }
@@ -1168,11 +1435,11 @@
                 nodes.forEach(node => {
                     html += '<li>';
                     html += `<div class="employee" data-id="${node.id}" style="border: 1px solid #ccc; padding: 10px 15px; text-decoration: none; color: #333; display: inline-block; border-radius: 5px; transition: all 0.5s; background-color: #fff; min-width: 150px; margin-top: 10px; position: relative;">
-                                        <div class="name" style="font-weight: bold; color: var(--primary-color);">${node.name}</div>
-                                        <div class="position" style="font-size: 14px; font-weight: bold; margin-top: 5px;">${node.position || 'No Position'}</div>
-                                        <div class="department" style="font-size: 12px; color: #666; margin-top: 5px;">${node.departmentName || 'No Department'}</div>
-                                        <div style="font-size: 10px; color: #999; margin-top: 5px;">ID: ${node.id}</div>
-                                     </div>`;
+                                            <div class="name" style="font-weight: bold; color: var(--primary-color);">${node.name}</div>
+                                            <div class="position" style="font-size: 14px; font-weight: bold; margin-top: 5px;">${node.position || 'No Position'}</div>
+                                            <div class="department" style="font-size: 12px; color: #666; margin-top: 5px;">${node.departmentName || 'No Department'}</div>
+                                            <div style="font-size: 10px; color: #999; margin-top: 5px;">ID: ${node.id}</div>
+                                         </div>`;
 
                     if (node.subordinates && node.subordinates.length > 0) {
                         html += createTreeHTML(node.subordinates);
@@ -1191,23 +1458,29 @@
 
                 employees.forEach(emp => {
                     const card = document.createElement('div');
-                    card.className = 'employee-card' + (emp.subordinates && emp.subordinates.length > 0 ? ' manager' : '');
+                    card.className = 'employee-card' + ((emp.subordinates && emp.subordinates.length > 0) ? ' manager' : '');
                     card.dataset.id = emp.id;
 
                     let html = `
-                                <div class="name">${emp.name}</div>
-                                <div class="position">${emp.position || 'No Position'}</div>
-                                <div class="department">${emp.departmentName || 'No Department'}</div>
-                                <div class="meta">
-                                    <div class="id">ID: ${emp.id}</div>
-                                    <div class="subordinates-count">
-                                        <i class="fas fa-user-friends"></i> ${emp.subordinates ? emp.subordinates.length : 0}
+                                    <div class="name">${emp.name}</div>
+                                    <div class="position">${emp.position || 'No Position'}</div>
+                                    <div class="department">${emp.departmentName || 'No Department'}</div>
+                                    <div class="meta">
+                                        <div class="id">ID: ${emp.id}</div>
+                                        <div class="subordinates-count">
+                                            <i class="fas fa-user-friends"></i> ${emp.subordinates ? emp.subordinates.length : 0}
+                                        </div>
                                     </div>
-                                </div>
-                            `;
+                                `;
 
                     if (emp.managerName) {
                         html += `<div class="badge">Reports to: ${emp.managerName}</div>`;
+                    }
+
+                    if (emp.skills && emp.skills.length > 0) {
+                        html += `<div class="skills-list">` +
+                            emp.skills.map(skill => `<span class="skill-badge">${skill}</span>`).join(' ') +
+                            `</div>`;
                     }
 
                     card.innerHTML = html;
@@ -1226,10 +1499,8 @@
             }
 
             function updateStatistics(employees) {
-                // Update employee count
                 employeeCountElement.textContent = employees.length;
 
-                // Count departments (unique)
                 const departments = new Set();
                 employees.forEach(emp => {
                     if (emp.departmentName) {
@@ -1238,25 +1509,20 @@
                 });
                 departmentCountElement.textContent = departments.size;
 
-                // Count managers
                 const managers = employees.filter(emp => emp.subordinates && emp.subordinates.length > 0);
                 managerCountElement.textContent = managers.length;
             }
 
-            // Initialize modals and forms
             initializeEmployeeActions();
             fetchDepartments();
 
-            // Function to initialize modal events
             function initializeEmployeeActions() {
-                // Open modal for adding employee
                 addEmployeeBtn.addEventListener('click', function () {
                     document.getElementById('modal-title').textContent = 'Add New Employee';
                     resetForm();
                     employeeModal.style.display = 'block';
                 });
 
-                // Close modal
                 closeEmployeeModal.addEventListener('click', function () {
                     employeeModal.style.display = 'none';
                 });
@@ -1265,7 +1531,6 @@
                     employeeModal.style.display = 'none';
                 });
 
-                // Close modal when clicking outside
                 window.addEventListener('click', function (event) {
                     if (event.target === employeeModal) {
                         employeeModal.style.display = 'none';
@@ -1275,32 +1540,29 @@
                     }
                 });
 
-                // Handle form submission
                 employeeForm.addEventListener('submit', function (e) {
                     e.preventDefault();
+                    const skillsSelect = document.getElementById('skills');
+                    const selectedSkills = $(skillsSelect).select2('data').map(item => item.text);
                     const employeeData = {
                         name: document.getElementById('name').value,
                         position: document.getElementById('position').value,
                         departmentId: parseInt(document.getElementById('department').value),
-                        managerId: document.getElementById('manager').value ? parseInt(document.getElementById('manager').value) : null
+                        managerId: document.getElementById('manager').value ? parseInt(document.getElementById('manager').value) : null,
+                        skills: selectedSkills
                     };
 
                     if (document.getElementById('employee-id').value) {
-                        // Update existing employee
-                        employeeData.id = parseInt(document.getElementById('employee-id').value);
                         updateEmployee(employeeData);
                     } else {
-                        // Add new employee
                         addEmployee(employeeData);
                     }
                 });
 
-                // Cancel delete
                 cancelDelete.addEventListener('click', function () {
                     confirmModal.style.display = 'none';
                 });
 
-                // Confirm delete
                 confirmDelete.addEventListener('click', function () {
                     if (currentEmployeeId) {
                         deleteEmployee(currentEmployeeId);
@@ -1308,17 +1570,17 @@
                 });
             }
 
-            // Function to reset form
             function resetForm() {
                 document.getElementById('employee-id').value = '';
                 document.getElementById('name').value = '';
                 document.getElementById('position').value = '';
                 document.getElementById('department').value = '';
                 document.getElementById('manager').value = '';
+                $('#skills').val(null).trigger('change');
                 populateManagerDropdown();
+                loadSkillsDropdown();
             }
 
-            // Fetch departments from API
             function fetchDepartments() {
                 fetch('/api/Department')
                     .then(response => {
@@ -1342,12 +1604,10 @@
                     });
             }
 
-            // Fetch employees
             function fetchEmployees() {
                 fetch('/api/Values/GetEmployees')
                     .then(response => {
                         if (!response.ok) {
-                            // Get more details about the error
                             console.error('Response status:', response.status);
                             console.error('Response statusText:', response.statusText);
                             return response.text().then(text => {
@@ -1367,7 +1627,6 @@
                     });
             }
 
-            // Populate department dropdown
             function populateDepartmentDropdown() {
                 const departmentSelect = document.getElementById('department');
                 departmentSelect.innerHTML = '<option value="">Select Department</option>';
@@ -1379,8 +1638,6 @@
                     departmentSelect.appendChild(option);
                 });
             }
-
-            // Populate manager dropdown
             function populateManagerDropdown() {
                 const managerSelect = document.getElementById('manager');
                 managerSelect.innerHTML = '<option value="">No Manager (Top Level)</option>';
@@ -1390,7 +1647,6 @@
                     option.value = emp.id;
                     option.textContent = emp.name + ' (' + emp.position + ')';
 
-                    // Don't allow selection of self as manager when editing
                     const currentId = document.getElementById('employee-id').value;
                     if (currentId && emp.id === parseInt(currentId)) {
                         option.disabled = true;
@@ -1400,10 +1656,21 @@
                 });
             }
 
-            // Add employee
             function addEmployee(employeeData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can add employees', 'error');
+                    return;
+                }
                 document.getElementById('save-btn').innerHTML = '<span class="spinner"></span> Saving...';
                 document.getElementById('save-btn').disabled = true;
+                console.log('Sending to server:', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(employeeData),
+                });
+                console.log('Sending employee data:', employeeData);
 
                 fetch('/api/Values/PostEmployee', {
                     method: 'POST',
@@ -1414,28 +1681,62 @@
                 })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Failed to add employee');
+                            return response.text().then(text => { throw new Error(text) });
                         }
                         return response.json();
                     })
                     .then(data => {
                         employeeModal.style.display = 'none';
                         showToast('Employee added successfully!', 'success');
-                        // Reload the organization chart
                         fetchEmployeeTree();
                     })
                     .catch(error => {
-                        showToast('Error: ' + error.message, 'error');
-                        console.error('Error adding employee:', error);
+                        console.error('Full error:', error);
+                        showToast('Error: ' + (error.message || 'Failed to add employee'), 'error');
                     })
                     .finally(() => {
                         document.getElementById('save-btn').innerHTML = 'Save';
                         document.getElementById('save-btn').disabled = false;
                     });
             }
+            function loadSkillsDropdown(employeeSkills = []) {
+                const skillsSelect = document.getElementById('skills');
 
-            // Update employee
+                if ($(skillsSelect).hasClass('select2-hidden-accessible')) {
+                    $(skillsSelect).select2('destroy');
+                }
+
+                skillsSelect.innerHTML = '';
+
+                const commonSkills = [
+                    'C#', 'ASP.NET', 'JavaScript', 'React', 'Angular',
+                    'SQL', 'Entity Framework', 'HTML/CSS', 'Python',
+                    'Project Management', 'Leadership', 'Communication',
+                    'Problem Solving', 'Git', 'Docker', 'Azure', 'AWS'
+                ];
+
+                commonSkills.forEach(skill => {
+                    const option = document.createElement('option');
+                    option.value = skill;
+                    option.textContent = skill;
+                    if (employeeSkills.includes(skill)) {
+                        option.selected = true;
+                    }
+                    skillsSelect.appendChild(option);
+                });
+
+                $(skillsSelect).select2({
+                    placeholder: 'Select skills...',
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
+
             function updateEmployee(employeeData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can update employees', 'error');
+                    return;
+                }
                 document.getElementById('save-btn').innerHTML = '<span class="spinner"></span> Saving...';
                 document.getElementById('save-btn').disabled = true;
 
@@ -1452,7 +1753,6 @@
                         }
                         employeeModal.style.display = 'none';
                         showToast('Employee updated successfully!', 'success');
-                        // Reload the organization chart
                         fetchEmployeeTree();
                     })
                     .catch(error => {
@@ -1465,22 +1765,44 @@
                     });
             }
 
-            // Delete employee
             function deleteEmployee(id) {
+                if (!isAdmin) {
+                    showToast('Only administrators can delete employees', 'error');
+                    return;
+                }
                 document.getElementById('confirm-delete').innerHTML = '<span class="spinner"></span> Deleting...';
                 document.getElementById('confirm-delete').disabled = true;
 
-                fetch(`/api/Values/DeleteEmployee/${id}`, {
-                    method: 'DELETE',
-                })
+                fetch(`/api/Values/GetEmployeeByID/${id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to get employee data');
+                        }
+                        return response.json();
+                    })
+                    .then(employee => {
+                        if (employee.managerId === 0 || employee.managerId === 1) {
+                            throw new Error('Employees with manager ID 0 or 1 cannot be deleted');
+                        }
+
+                        return fetch(`/api/Values/DeleteEmployee/${id}`, {
+                            method: 'DELETE',
+                        });
+                    })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Failed to delete employee');
                         }
                         confirmModal.style.display = 'none';
                         showToast('Employee deleted successfully!', 'success');
-                        // Reload the organization chart
                         fetchEmployeeTree();
+                    })
+                    .then(() => {
+                        return fetchEmployees();
+                    })
+                    .then(() => {
+                        populateManagerDropdown();
+                        checkUndoAvailability();
                     })
                     .catch(error => {
                         showToast('Error: ' + error.message, 'error');
@@ -1491,8 +1813,95 @@
                         document.getElementById('confirm-delete').disabled = false;
                     });
             }
+            function checkUndoAvailability() {
+                fetch('/api/Values/GetUndoCount')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to get undo count');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Undo count data:', data);
 
-            // Show toast notification
+                        const undoButton = document.getElementById('undo-delete-button');
+                        if (undoButton) {
+                            const count = data.count !== undefined ? data.count : 0;
+
+                            console.log('Parsed count:', count);
+
+                            if (count > 0) {
+                                undoButton.disabled = false;
+                                undoButton.title = `Undo last deletion (${count} available)`;
+
+                                if (!document.querySelector('#undo-delete-button .undo-count')) {
+                                    const countBadge = document.createElement('span');
+                                    countBadge.className = 'undo-count';
+                                    countBadge.textContent = count;
+                                    undoButton.appendChild(countBadge);
+                                } else {
+                                    document.querySelector('#undo-delete-button .undo-count').textContent = count;
+                                }
+                            } else {
+                                undoButton.disabled = true;
+                                undoButton.title = 'No deletions to undo';
+
+                                const countBadge = document.querySelector('#undo-delete-button .undo-count');
+                                if (countBadge) {
+                                    countBadge.remove();
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking undo availability:', error);
+                    });
+            }
+
+            function undoDeleteEmployee() {
+                if (!isAdmin) {
+                    showToast('Only administrators can undo deletions', 'error');
+                    return;
+                }
+                const undoButton = document.getElementById('undo-delete-button');
+                const originalContent = undoButton.innerHTML;
+
+                undoButton.innerHTML = '<span class="spinner"></span> Restoring...';
+                undoButton.disabled = true;
+
+                fetch('/api/Values/UndoDeleteEmployee', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(text || 'Failed to restore employee');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(employee => {
+                        console.log('Restored employee:', employee);
+                        showToast(`Employee "${employee.name}" has been restored!`, 'success');
+
+                        fetchEmployeeTree();
+
+                        checkUndoAvailability();
+                    })
+                    .catch(error => {
+                        console.error('Error in undo delete:', error);
+                        showToast('Error: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        undoButton.innerHTML = '<i class="fas fa-undo"></i> Undo Delete';
+
+                        checkUndoAvailability();
+                    });
+            }
+
             function showToast(message, type = 'success') {
                 toastMessage.textContent = message;
                 toast.className = 'toast ' + type + ' show';
@@ -1502,30 +1911,24 @@
                 }, 3000);
             }
 
-            // Add action buttons to employees
             function addActionButtonsToEmployees() {
-                // Add to tree view
                 const treeEmployees = document.querySelectorAll('#tree-container .employee');
                 treeEmployees.forEach(emp => {
                     addActionButtonsToElement(emp);
                 });
 
-                // Add to grid view
                 const gridEmployees = document.querySelectorAll('#grid-container .employee-card');
                 gridEmployees.forEach(emp => {
                     addActionButtonsToElement(emp);
                 });
             }
 
-            // Add action buttons to a specific element
             function addActionButtonsToElement(element) {
-                // Avoid adding duplicate buttons
                 if (element.querySelector('.employee-actions')) return;
 
                 const actions = document.createElement('div');
-                actions.className = 'employee-actions';
+                actions.className = 'employee-actions admin-only';
 
-                // Get employee ID from the element
                 let id;
                 if (element.dataset.id) {
                     id = parseInt(element.dataset.id);
@@ -1537,7 +1940,6 @@
                     id = parseInt(idText.replace('ID:', '').trim());
                 }
 
-                // Edit button
                 const editBtn = document.createElement('button');
                 editBtn.className = 'action-btn edit-btn';
                 editBtn.innerHTML = '<i class="fas fa-edit"></i>';
@@ -1546,7 +1948,6 @@
                     openEditModal(id);
                 });
 
-                // Delete button
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'action-btn delete-btn';
                 deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
@@ -1560,7 +1961,6 @@
                 element.appendChild(actions);
             }
 
-            // Open edit modal
             function openEditModal(id) {
                 fetch(`/api/Values/GetEmployeeByID/${id}`)
                     .then(response => {
@@ -1575,14 +1975,15 @@
                         document.getElementById('name').value = employee.name;
                         document.getElementById('position').value = employee.position;
 
-                        // Set department
                         const departmentSelect = document.getElementById('department');
                         departmentSelect.value = employee.departmentId || '';
 
-                        // Set manager
                         populateManagerDropdown();
                         const managerSelect = document.getElementById('manager');
                         managerSelect.value = employee.managerId || '';
+
+                        const employeeSkills = Array.isArray(employee.skills) ? employee.skills : [];
+                        loadSkillsDropdown(employee.skills || []);
 
                         employeeModal.style.display = 'block';
                     })
@@ -1592,11 +1993,22 @@
                     });
             }
 
-            // Open delete confirmation
             function openDeleteConfirmation(id) {
                 currentEmployeeId = id;
                 confirmModal.style.display = 'block';
             }
+
+            function toggleDebugPanel() {
+                const panel = document.getElementById('debug-panel');
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            }
+
+            document.addEventListener('keydown', function (event) {
+                if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+                    toggleDebugPanel();
+                    event.preventDefault();
+                }
+            });
         });
     </script>
 </body>

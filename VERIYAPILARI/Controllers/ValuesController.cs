@@ -16,6 +16,8 @@ namespace VERIYAPILARI.Controllers
     public class ValuesController(ApplicationDBContext context) : ControllerBase
     {
         private readonly ApplicationDBContext _context = context;
+        private static readonly Stack<Employee> _deletedEmployees = new Stack<Employee>();
+
 
         [HttpGet("GetEmployees")]
         public async Task<ActionResult<List<Employee>>> GetEmployees()
@@ -97,6 +99,13 @@ namespace VERIYAPILARI.Controllers
         {
             if (newEmployee == null)
                 return BadRequest("Employee data is required.");
+            var existingEmployee = await _context.Employees
+        .                           FirstOrDefaultAsync(e => e.Name == newEmployee.Name && e.DepartmentId == newEmployee.DepartmentId);
+
+            if (existingEmployee != null)
+            {
+                return Conflict("An employee with the same name already exists in this department.");
+            }
 
             newEmployee.StartDate = DateTime.UtcNow;
             _context.Employees.Add(newEmployee);
@@ -136,12 +145,61 @@ namespace VERIYAPILARI.Controllers
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
                 return NotFound();
+            if (employee.ManagerId == 0 || employee.ManagerId == 1)
+            {
+                return BadRequest("Employees with manager ID 0 or 1 cannot be deleted.");
+            }
+            _deletedEmployees.Push(employee);
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+        [HttpPost("UndoDeleteEmployee")]
+        public async Task<IActionResult> UndoDeleteEmployee()
+        {
+            if (_deletedEmployees.Count == 0)
+            {
+                return BadRequest("No deleted employees to restore.");
+            }
 
+            var employeeToRestore = _deletedEmployees.Pop();
+
+            try
+            {
+                // Create a new employee with the same properties except ID
+                var newEmployee = new Employee
+                {
+                    // Do NOT set the ID - let the database generate a new one
+                    Name = employeeToRestore.Name,
+                    ManagerId = employeeToRestore.ManagerId,
+                    Manager = employeeToRestore.Manager,
+                    Email = employeeToRestore.Email,
+                    DepartmentId = employeeToRestore.DepartmentId,
+                    Department = employeeToRestore.Department,
+                    Position = employeeToRestore.Position,
+                    StartDate = employeeToRestore.StartDate,
+                };
+
+                // Add the new employee to the context
+                _context.Employees.Add(newEmployee);
+                await _context.SaveChangesAsync();
+
+                // Return the newly created employee with its new ID
+                return Ok(newEmployee);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error restoring employee: {ex.Message}");
+            }
+        }
+
+        // Get count of employees that can be restored
+        [HttpGet("GetUndoCount")]
+        public IActionResult GetUndoCount()
+        {
+            return Ok(new { Count = _deletedEmployees.Count });
+        }
         [HttpGet("GetDepartmentsEmployees/{id}")]
         public async Task<IActionResult> GetDepartmentsEmployees(int id)
         {
@@ -371,6 +429,7 @@ namespace VERIYAPILARI.Controllers
             public string? DepartmentName { get; set; }
 
             public List<EmployeeTreeNode> Subordinates { get; set; } = new();
+            public List<string> Skills { get; set; } = new();
         }
         private async Task<List<EmployeeTreeNode>> BuildEmployeeTree()
         {
@@ -385,7 +444,8 @@ namespace VERIYAPILARI.Controllers
                     Id = e.Id,
                     Name = e.Name,
                     Position = e.Position,
-                    DepartmentName = e.Department?.Name
+                    DepartmentName = e.Department?.Name,
+                    Skills = e.Skills ?? new List<string>(),
                 });
 
             List<EmployeeTreeNode> roots = new();
@@ -414,6 +474,61 @@ namespace VERIYAPILARI.Controllers
             return Ok(tree);
         }
 
+        [HttpGet("GetEmployeesBySkill")]
+        public async Task<IActionResult> GetEmployeesBySkill([FromQuery] string skill)
+        {
+            if (string.IsNullOrEmpty(skill))
+            {
+                return BadRequest("Skill parameter is required.");
+            }
+
+            var normalizedSearch = skill.Trim().ToLower();
+
+
+            var employees = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Manager)
+                .ToListAsync();
+
+            Dictionary<string, List<Employee>> skillHashTable = new(StringComparer.OrdinalIgnoreCase);
+            foreach (var employee in employees)
+            {
+                if (employee.Skills != null)
+                {
+                    foreach (var empskill in employee.Skills)
+                    {
+                        var normalizedSkill = empskill.Trim().ToLower();
+
+                        if (!skillHashTable.ContainsKey(normalizedSkill))
+                        {
+                            skillHashTable[normalizedSkill] = new List<Employee>();
+                        }
+                        skillHashTable[normalizedSkill].Add(employee);
+                    }
+                }
+            }
+            var matchingEmployees = new List<Employee>();
+
+            foreach (var kvp in skillHashTable)
+            {
+                if (kvp.Key.Contains(normalizedSearch))  // partial match inside the key
+                {
+                    matchingEmployees.AddRange(kvp.Value);
+                }
+            }
+
+            if (matchingEmployees.Any())
+            {
+                var result = matchingEmployees
+                    .Distinct()   // avoid duplicates
+                    .Select(e => MapEmployeeToDto(e))
+                    .ToList();
+
+                return Ok(result);
+            }
+
+            return NotFound($"No employees found with skill: {skill}");
+        }
     }
 }
 
