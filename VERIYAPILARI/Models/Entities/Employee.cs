@@ -23,6 +23,7 @@ namespace VERIYAPILARI.Models.Entities
         public DateTime StartDate { get; set; } = DateTime.Now;
 
         public string? Email { get; set; }
+        public List<string> Skills { get; set; } = new List<string>();
 
     }
 

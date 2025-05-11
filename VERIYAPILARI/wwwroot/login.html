@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: #fff;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            max-width: 370px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 8px rgba(172, 182, 229, 0.2);
+        }
+        .login-logo i {
+            font-size: 2rem;
+            color: #007bff;
+        }
+        .login-header {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #222;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-group {
+            width: 100%;
+            margin-bottom: 1.2rem;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .form-group input {
+            width: 90%;
+            margin: 0 auto;
+            padding: 0.85rem 1rem 0.85rem 2.7rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f7f9fa;
+            transition: border 0.2s;
+            display: block;
+        }
+        .form-group input:focus {
+            border: 1.5px solid #007bff;
+            outline: none;
+            background: #fff;
+        }
+        .form-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0b0b0;
+            font-size: 1.1rem;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            margin-right: 0.7rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-message {
+            color: #dc3545;
+            margin-top: 1rem;
+            text-align: center;
+            background: #ffeaea;
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            display: none;
+            font-size: 0.98rem;
+        }
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem 0.7rem 1.2rem 0.7rem;
+                max-width: 98vw;
+            }
+        }
+        .register-section {
+            margin-top: 2.2rem;
+            padding: 1.3rem 1.2rem;
+            background: linear-gradient(90deg, #e3f0ff 0%, #f9f9f9 100%);
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .register-section span {
+            font-size: 1.12rem;
+            color: #333;
+        }
+        .register-btn {
+            display: inline-block;
+            padding: 0.55rem 1.7rem;
+            background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
+            color: #fff;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            border: none;
+        }
+        .register-btn:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
+            color: #fff;
+        }
+        .register-section-alt {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.05rem;
+            color: #444;
+        }
+        .register-link-alt {
+            color: #007bff;
+            font-weight: 600;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .register-link-alt:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        .admin-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-logo">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="login-header">Sign in to Organization</div>
+        <form id="loginForm">
+            <div class="form-group">
+                <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+                <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password">
+            </div>
+            <button type="submit" id="loginBtn">
+                <span id="spinner" class="spinner" style="display:none;"></span>
+                <span id="btnText">Login</span>
+            </button>
+            <div id="errorMessage" class="error-message"></div>
+        </form>
+        <div class="register-section-alt">
+            <span>Don't have an account?</span>
+            <a href="register.html" class="register-link-alt">Register</a>
+        </div>
+    </div>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            spinner.style.display = 'inline-block';
+            btnText.textContent = 'Logging in...';
+            loginBtn.disabled = true;
+            errorMessage.style.display = 'none';
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('authToken', data.token);
+                    window.location.href = '/org-chart.html';
+                } else {
+                    const error = await response.json();
+                    errorMessage.textContent = error.message || 'Login failed';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'An error occurred. Please try again.';
+                errorMessage.style.display = 'block';
+            } finally {
+                spinner.style.display = 'none';
+                btnText.textContent = 'Login';
+                loginBtn.disabled = false;
+            }
+        });
+
+        function updateUIForAdminStatus() {
+            const adminElements = document.querySelectorAll('.admin-only');
+            adminElements.forEach(el => {
+                el.style.display = isAdmin ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html> 
