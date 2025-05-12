@@ -185,7 +185,7 @@
         </form>
         <div class="login-section-alt">
             <span>Already have an account?</span>
-            <a href="login.html" class="login-link-alt">Login</a>
+            <a href="index.html" class="login-link-alt">Login</a>
         </div>
     </div>
     <script>
@@ -240,7 +240,7 @@
                     if (response.ok) {
                         showAlert('Registration successful! Redirecting to login...', 'success');
                         setTimeout(() => {
-                            window.location.href = 'login.html';
+                            window.location.href = 'index.html';
                         }, 2000);
                     } else {
                         showAlert(data.message || 'Registration failed. Please try again.', 'danger');
@@ -250,7 +250,7 @@
                     if (response.ok) {
                         showAlert('Registration successful! Redirecting to login...', 'success');
                         setTimeout(() => {
-                            window.location.href = 'login.html';
+                            window.location.href = 'index.html';
                         }, 2000);
                     } else {
                         showAlert(textData || `Server error: ${response.status}`, 'danger');
