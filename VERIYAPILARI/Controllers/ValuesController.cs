@@ -125,6 +125,7 @@ namespace VERIYAPILARI.Controllers
             employee.StartDate = updatedEmployee.StartDate;
             employee.DepartmentId = updatedEmployee.DepartmentId;
             employee.Department = updatedEmployee.Department;
+            employee.Skills = updatedEmployee.Skills;
             if (updatedEmployee.ManagerId != employee.ManagerId)
             {
                 employee.ManagerId = updatedEmployee.ManagerId;
@@ -142,12 +143,14 @@ namespace VERIYAPILARI.Controllers
         [HttpDelete("DeleteEmployee/{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+           var employee = await _context.Employees
+        .Include(e => e.Subordinates)
+        .FirstOrDefaultAsync(e => e.Id == id);
             if (employee == null)
                 return NotFound();
-            if (employee.ManagerId == 0 || employee.ManagerId == 1)
+            if (employee.Subordinates != null && employee.Subordinates.Count > 0)
             {
-                return BadRequest("Employees with manager ID 0 or 1 cannot be deleted.");
+                return BadRequest("Manegers cannot be deleted.");
             }
             _deletedEmployees.Push(employee);
             _context.Employees.Remove(employee);
