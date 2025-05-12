@@ -7,7 +7,15 @@ using VERIYAPILARI.Data;
 using VERIYAPILARI.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
+app.UseDefaultFiles(new DefaultFilesOptions 
+{
+    DefaultFileNames = new List<string> { "index.html" }
+});
+
+app.UseStaticFiles();
+app.UseDefaultFiles();
 // Add JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -34,9 +42,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var app = builder.Build();
-app.UseStaticFiles();
-app.UseDefaultFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -44,7 +49,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
