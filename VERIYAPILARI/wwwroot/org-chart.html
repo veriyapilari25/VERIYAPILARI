@@ -1,11 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organization Chart</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -16,6 +17,7 @@
             margin: 0;
             min-height: 100vh;
         }
+
         .main-org-container {
             background: #fff;
             padding: 2.5rem 2rem 2rem 2rem;
@@ -28,6 +30,7 @@
             flex-direction: column;
             align-items: stretch;
         }
+
         .org-header-logo {
             width: 60px;
             height: 60px;
@@ -39,10 +42,12 @@
             margin: 0 auto 1.2rem auto;
             box-shadow: 0 2px 8px rgba(172, 182, 229, 0.2);
         }
+
         .org-header-logo i {
             font-size: 2rem;
             color: #007bff;
         }
+
         .org-header-title {
             font-weight: 600;
             font-size: 2rem;
@@ -50,47 +55,62 @@
             margin-bottom: 0.5rem;
             text-align: center;
         }
+
         .org-header-desc {
             font-size: 1.1rem;
             color: #555;
             text-align: center;
             margin-bottom: 2rem;
         }
-        .btn, .btn-primary, .btn-secondary, .btn-danger, .btn-outline-secondary {
+
+        .btn,
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger,
+        .btn-outline-secondary {
             font-family: 'Poppins', Arial, sans-serif;
             border-radius: 8px;
             font-weight: 600;
             font-size: 1.05rem;
             transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08);
         }
+
         .btn-primary {
             background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
             color: #fff;
             border: none;
         }
+
         .btn-primary:hover {
             background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
         }
+
         .btn-outline-secondary {
             border: 1.5px solid #e0e0e0;
             background: #fff;
             color: #007bff;
         }
+
         .btn-outline-secondary:hover {
             background: #e3f0ff;
         }
-        .form-control, .search-box input, select {
+
+        .form-control,
+        .search-box input,
+        select {
             border-radius: 8px;
             font-family: 'Poppins', Arial, sans-serif;
             font-size: 1rem;
         }
+
         .header {
             background: none;
             box-shadow: none;
             margin-bottom: 0;
             padding: 0;
         }
+
         .container {
             background: none;
             box-shadow: none;
@@ -98,6 +118,7 @@
             margin: 0;
             max-width: 100%;
         }
+
         :root {
             --primary-color: #3498db;
             --secondary-color: #2980b9;
@@ -167,9 +188,9 @@
             transition: color 0.2s;
         }
 
-            .close-modal:hover {
-                color: #333;
-            }
+        .close-modal:hover {
+            color: #333;
+        }
 
         .modal-header {
             border-bottom: 1px solid #eee;
@@ -177,22 +198,22 @@
             margin-bottom: 20px;
         }
 
-            .modal-header h2 {
-                margin: 0;
-                color: var(--primary-color);
-                font-size: 1.5rem;
-            }
+        .modal-header h2 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
 
         .form-group {
             margin-bottom: 15px;
         }
 
-            .form-group label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: 500;
-                color: #555;
-            }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
 
         .form-actions {
             text-align: right;
@@ -217,7 +238,7 @@
             padding: 0.55rem 1.2rem;
             font-size: 1.03rem;
             min-width: 120px;
-            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.07);
         }
 
         .employee-actions {
@@ -253,17 +274,17 @@
             background-color: var(--warning-color);
         }
 
-            .edit-btn:hover {
-                background-color: #d35400;
-            }
+        .edit-btn:hover {
+            background-color: #d35400;
+        }
 
         .delete-btn {
             background-color: #e74c3c;
         }
 
-            .delete-btn:hover {
-                background-color: #c0392b;
-            }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
 
         .toast {
             position: fixed;
@@ -282,17 +303,17 @@
             gap: 10px;
         }
 
-            .toast.success {
-                background-color: var(--success-color);
-            }
+        .toast.success {
+            background-color: var(--success-color);
+        }
 
-            .toast.error {
-                background-color: #e74c3c;
-            }
+        .toast.error {
+            background-color: #e74c3c;
+        }
 
-            .toast.show {
-                opacity: 1;
-            }
+        .toast.show {
+            opacity: 1;
+        }
 
         .confirm-modal {
             display: none;
@@ -331,17 +352,17 @@
             position: relative;
         }
 
-            .employee .employee-actions {
-                position: absolute;
-                top: 8px;
-                right: 8px;
-            }
+        .employee .employee-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
 
         .spinner {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            border: 3px solid rgba(255, 255, 255, .3);
             border-radius: 50%;
             border-top-color: #fff;
             animation: spin 1s ease-in-out infinite;
@@ -368,28 +389,28 @@
             position: relative;
         }
 
-            .search-box input {
-                width: 100%;
-                padding: 10px 15px 10px 40px;
-                border: 1px solid var(--border-color);
-                border-radius: 30px;
-                font-size: 1rem;
-                outline: none;
-                transition: all 0.3s;
-            }
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
 
-                .search-box input:focus {
-                    border-color: var(--primary-color);
-                    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-                }
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
 
-            .search-box i {
-                position: absolute;
-                left: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #aaa;
-            }
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
 
         .view-options {
             display: flex;
@@ -408,15 +429,15 @@
             transition: all 0.2s;
         }
 
-            .view-btn:hover {
-                background-color: #f8f9fa;
-            }
+        .view-btn:hover {
+            background-color: #f8f9fa;
+        }
 
-            .view-btn.active {
-                background-color: var(--primary-color);
-                color: white;
-                border-color: var(--primary-color);
-            }
+        .view-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
 
         .card {
             background: white;
@@ -442,40 +463,40 @@
             transition: all 0.3s ease;
         }
 
-            #undo-delete-button:disabled {
-                opacity: 0.6;
-                cursor: not-allowed;
-            }
+        #undo-delete-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-            #undo-delete-button .spinner {
-                display: inline-block;
-                width: 16px;
-                height: 16px;
-                border: 2px solid rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                border-top-color: #fff;
-                animation: spin 1s linear infinite;
-                margin-right: 5px;
-            }
+        #undo-delete-button .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin-right: 5px;
+        }
 
-            #undo-delete-button:hover:not(:disabled) {
-                background-color: #6c757d;
-                color: white;
-            }
+        #undo-delete-button:hover:not(:disabled) {
+            background-color: #6c757d;
+            color: white;
+        }
 
-            #undo-delete-button .undo-count {
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                width: 18px;
-                height: 18px;
-                background-color: #28a745;
-                color: white;
-                border-radius: 50%;
-                font-size: 10px;
-                margin-left: 5px;
-                font-weight: bold;
-            }
+        #undo-delete-button .undo-count {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 18px;
+            height: 18px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
 
         @keyframes spin {
             to {
@@ -489,101 +510,101 @@
             align-items: center;
         }
 
-            .tree ul {
-                padding-top: 20px;
-                position: relative;
-                transition: all 0.5s;
-                padding-left: 0;
-            }
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+            transition: all 0.5s;
+            padding-left: 0;
+        }
 
-            .tree li {
-                float: left;
-                text-align: center;
-                list-style-type: none;
-                position: relative;
-                padding: 20px 5px 0 5px;
-                transition: all 0.5s;
-            }
+        .tree li {
+            float: left;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+            transition: all 0.5s;
+        }
 
-                .tree li::before,
-                .tree li::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    right: 50%;
-                    border-top: 1px solid #ccc;
-                    width: 50%;
-                    height: 20px;
-                }
+        .tree li::before,
+        .tree li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 1px solid #ccc;
+            width: 50%;
+            height: 20px;
+        }
 
-                .tree li::after {
-                    right: auto;
-                    left: 50%;
-                    border-left: 1px solid #ccc;
-                }
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 1px solid #ccc;
+        }
 
-                .tree li:only-child::after,
-                .tree li:only-child::before {
-                    display: none;
-                }
+        .tree li:only-child::after,
+        .tree li:only-child::before {
+            display: none;
+        }
 
-                .tree li:only-child {
-                    padding-top: 0;
-                }
+        .tree li:only-child {
+            padding-top: 0;
+        }
 
-                .tree li:first-child::before,
-                .tree li:last-child::after {
-                    border: 0 none;
-                }
+        .tree li:first-child::before,
+        .tree li:last-child::after {
+            border: 0 none;
+        }
 
-                .tree li:last-child::before {
-                    border-right: 1px solid #ccc;
-                    border-radius: 0 5px 0 0;
-                }
+        .tree li:last-child::before {
+            border-right: 1px solid #ccc;
+            border-radius: 0 5px 0 0;
+        }
 
-                .tree li:first-child::after {
-                    border-radius: 5px 0 0 0;
-                }
+        .tree li:first-child::after {
+            border-radius: 5px 0 0 0;
+        }
 
-            .tree ul ul::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 50%;
-                border-left: 1px solid #ccc;
-                width: 0;
-                height: 20px;
-            }
+        .tree ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 1px solid #ccc;
+            width: 0;
+            height: 20px;
+        }
 
-            .tree li .employee {
-                border: 1px solid #ccc;
-                padding: 10px 15px;
-                text-decoration: none;
-                color: #333;
-                display: inline-block;
-                border-radius: 5px;
-                transition: all 0.5s;
-                background-color: #fff;
-                min-width: 150px;
-                margin-top: 10px;
-                position: relative;
-            }
+        .tree li .employee {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            display: inline-block;
+            border-radius: 5px;
+            transition: all 0.5s;
+            background-color: #fff;
+            min-width: 150px;
+            margin-top: 10px;
+            position: relative;
+        }
 
-                .tree li .employee:hover,
-                .tree li .employee:hover + ul li .employee {
-                    background: #e2f0ff !important;
-                    color: white !important;
-                    border: 1px solid #0066cc !important;
-                    transition: all 0.3s;
-                }
+        .tree li .employee:hover,
+        .tree li .employee:hover+ul li .employee {
+            background: #e2f0ff !important;
+            color: white !important;
+            border: 1px solid #0066cc !important;
+            transition: all 0.3s;
+        }
 
-                    .tree li .employee:hover + ul li::after,
-                    .tree li .employee:hover + ul li::before,
-                    .tree li .employee:hover + ul::before,
-                    .tree li .employee:hover + ul ul::before {
-                        border-color: #0066cc !important;
-                        transition: all 0.3s;
-                    }
+        .tree li .employee:hover+ul li::after,
+        .tree li .employee:hover+ul li::before,
+        .tree li .employee:hover+ul::before,
+        .tree li .employee:hover+ul ul::before {
+            border-color: #0066cc !important;
+            transition: all 0.3s;
+        }
 
         .grid-view {
             display: grid;
@@ -606,62 +627,69 @@
             min-height: 160px;
         }
 
-            .employee-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                border-color: var(--primary-color);
-            }
+        .employee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
 
-            .employee-card.manager {
-                border-left: 4px solid var(--primary-color);
-            }
+        .employee-card.manager {
+            border-left: 4px solid var(--primary-color);
+        }
 
-            .employee-card .name {
-                font-size: 1.2rem;
-                font-weight: 600;
-                margin-bottom: 5px;
-                color: var(--primary-color);
-            }
+        .employee-card .name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            max-width: 180px;
+            /* or whatever fits your design */
+            white-space: normal;
+            /* allow wrapping */
+            word-break: break-word;
+            /* break long words if needed */
+            overflow-wrap: break-word;
+        }
 
-            .employee-card .position {
-                font-size: 1rem;
-                font-weight: 500;
-                color: #555;
-                margin-bottom: 10px;
-            }
+        .employee-card .position {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 10px;
+        }
 
-            .employee-card .department {
-                padding: 5px 10px;
-                background-color: #f0f8ff;
-                border-radius: 15px;
-                display: inline-block;
-                font-size: 0.85rem;
-                color: var(--secondary-color);
-                margin-bottom: 10px;
-            }
+        .employee-card .department {
+            padding: 5px 10px;
+            background-color: #f0f8ff;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
 
-            .employee-card .meta {
-                margin-top: auto;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-top: 1px solid #eee;
-                padding-top: 10px;
-                font-size: 0.9rem;
-                color: #777;
-            }
+        .employee-card .meta {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            font-size: 0.9rem;
+            color: #777;
+        }
 
-            .employee-card .id {
-                background-color: #f5f5f5;
-                padding: 3px 8px;
-                border-radius: 10px;
-            }
+        .employee-card .id {
+            background-color: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
 
-            .employee-card .subordinates-count {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
+        .employee-card .subordinates-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
         .badge {
             position: absolute;
@@ -681,6 +709,7 @@
             flex-wrap: wrap;
             gap: 6px;
         }
+
         .skill-badge {
             background: #e3f0ff;
             color: #007bff;
@@ -720,20 +749,20 @@
             font-size: 1.5rem;
         }
 
-            .stat-icon.employees {
-                background-color: rgba(52, 152, 219, 0.2);
-                color: var(--primary-color);
-            }
+        .stat-icon.employees {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--primary-color);
+        }
 
-            .stat-icon.departments {
-                background-color: rgba(46, 204, 113, 0.2);
-                color: var(--success-color);
-            }
+        .stat-icon.departments {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
 
-            .stat-icon.managers {
-                background-color: rgba(230, 126, 34, 0.2);
-                color: var(--accent-color);
-            }
+        .stat-icon.managers {
+            background-color: rgba(230, 126, 34, 0.2);
+            color: var(--accent-color);
+        }
 
         .stat-content h3 {
             font-size: 1.8rem;
@@ -762,10 +791,10 @@
             color: #777;
         }
 
-            .loading i {
-                margin-right: 10px;
-                animation: spin 1s infinite linear;
-            }
+        .loading i {
+            margin-right: 10px;
+            animation: spin 1s infinite linear;
+        }
 
         .zoom-controls {
             position: fixed;
@@ -798,14 +827,14 @@
             transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
         }
 
-            .zoom-btn:hover {
-                background: linear-gradient(135deg, #38e8fa 0%, #4f8cff 100%);
-                transform: scale(1.12);
-                box-shadow: 0 4px 16px rgba(56, 232, 250, 0.18);
-            }
+        .zoom-btn:hover {
+            background: linear-gradient(135deg, #38e8fa 0%, #4f8cff 100%);
+            transform: scale(1.12);
+            box-shadow: 0 4px 16px rgba(56, 232, 250, 0.18);
+        }
 
-            /* Make the reset button a different accent color */
-            /* #zoom-reset.zoom-btn {
+        /* Make the reset button a different accent color */
+        /* #zoom-reset.zoom-btn {
                 background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
                 color: #fff;
             }
@@ -819,38 +848,38 @@
             display: inline-block;
         }
 
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 200px;
-                background-color: #333;
-                color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 10px;
-                position: absolute;
-                z-index: 1;
-                bottom: 125%;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0;
-                transition: opacity 0.3s;
-            }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-                .tooltip .tooltiptext::after {
-                    content: "";
-                    position: absolute;
-                    top: 100%;
-                    left: 50%;
-                    margin-left: -5px;
-                    border-width: 5px;
-                    border-style: solid;
-                    border-color: #333 transparent transparent transparent;
-                }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
 
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-            }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
 
         .select2-container--default .select2-selection--multiple {
             min-height: 38px;
@@ -891,7 +920,7 @@
             padding: 28px 24px 18px 24px;
             border-radius: 8px;
             background: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.18);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
         }
 
         #employee-modal .modal-header {
@@ -933,7 +962,7 @@
         #employee-modal .form-control:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(52,152,219,0.13);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.13);
         }
 
         #employee-modal .form-actions {
@@ -952,10 +981,11 @@
             min-width: 90px;
             margin-left: 0.3rem;
             margin-right: 0.3rem;
-            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.07);
             border: none;
             transition: background 0.18s, color 0.18s;
         }
+
         #manager.form-control {
             max-height: 160px;
             overflow-y: auto;
@@ -966,8 +996,9 @@
             background: #e74c3c !important;
             color: #fff !important;
             border: none !important;
-            box-shadow: 0 2px 8px rgba(231,76,60,0.15);
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.15);
         }
+
         .confirm-actions .btn-danger:hover {
             background: #c0392b !important;
             color: #fff !important;
@@ -982,6 +1013,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="main-org-container">
         <div class="org-header-logo">
@@ -1108,10 +1140,12 @@
         <i class="fas fa-check-circle"></i>
         <span id="toast-message"></span>
     </div>
-    <div id="debug-panel" style="position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; background: rgba(0,0,0,0.8); color: #00ff00; padding: 10px; font-family: monospace; font-size: 12px; overflow: auto; z-index: 9999; display: none;">
+    <div id="debug-panel"
+        style="position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; background: rgba(0,0,0,0.8); color: #00ff00; padding: 10px; font-family: monospace; font-size: 12px; overflow: auto; z-index: 9999; display: none;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
             <strong>Debug Console</strong>
-            <button onclick="document.getElementById('debug-panel').style.display='none'" style="background: none; border: none; color: white; cursor: pointer;">×</button>
+            <button onclick="document.getElementById('debug-panel').style.display='none'"
+                style="background: none; border: none; color: white; cursor: pointer;">×</button>
         </div>
         <div id="debug-log"></div>
     </div>
@@ -1120,46 +1154,46 @@
         let currentView = 'tree'; // default
 
         async function checkAdminStatus() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        console.error('No auth token found');
-        isAdmin = false;
-        updateUIForAdminStatus();
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/Auth/CheckAdminStatus', {
-            headers: {
-                'Authorization': `Bearer ${token}`
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.error('No auth token found');
+                isAdmin = false;
+                updateUIForAdminStatus();
+                return;
             }
-        });
-        
-        if (response.status === 401) {
-            console.error('Unauthorized - Please login');
-            isAdmin = false;
-            updateUIForAdminStatus();
-            return;
-        }
 
-        if (!response.ok) {
-            throw new Error('Failed to check admin status');
-        }
+            try {
+                const response = await fetch('/api/Auth/CheckAdminStatus', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-        const data = await response.json();
-        isAdmin = data.isAdmin;
-        updateUIForAdminStatus();
-    } catch (error) {
-        console.error('Error checking admin status:', error);
-        isAdmin = false;
-        updateUIForAdminStatus();
-    }
-}
+                if (response.status === 401) {
+                    console.error('Unauthorized - Please login');
+                    isAdmin = false;
+                    updateUIForAdminStatus();
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error('Failed to check admin status');
+                }
+
+                const data = await response.json();
+                isAdmin = data.isAdmin;
+                updateUIForAdminStatus();
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                isAdmin = false;
+                updateUIForAdminStatus();
+            }
+        }
 
         function updateUIForAdminStatus() {
             const actionButtons = document.querySelector('.action-buttons');
             const employeeActions = document.querySelectorAll('.employee-actions');
-            
+
             if (isAdmin) {
                 actionButtons.classList.remove('admin-only');
                 employeeActions.forEach(action => action.classList.remove('admin-only'));
@@ -1209,7 +1243,7 @@
             const managerCountElement = document.getElementById('manager-count');
 
             if (undoButton) {
-                undoButton.addEventListener('click', function() {
+                undoButton.addEventListener('click', function () {
                     undoDeleteEmployee();
                 });
             }
@@ -1745,11 +1779,11 @@
                     return;
                 }
                 const employeeId = document.getElementById('employee-id').value;
-    if (!employeeId) {
-        showToast('Error: No employee ID found', 'error');
-        return;
-    }
-    employeeData.id = parseInt(employeeId);
+                if (!employeeId) {
+                    showToast('Error: No employee ID found', 'error');
+                    return;
+                }
+                employeeData.id = parseInt(employeeId);
 
                 document.getElementById('save-btn').innerHTML = '<span class="spinner"></span> Saving...';
                 document.getElementById('save-btn').disabled = true;
@@ -2040,4 +2074,5 @@
         });
     </script>
 </body>
+
 </html>
