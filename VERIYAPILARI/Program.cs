@@ -55,5 +55,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
 app.Run();
+
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 
