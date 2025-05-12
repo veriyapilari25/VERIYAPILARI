@@ -274,7 +274,7 @@
             padding: 15px 20px;
             border-radius: 4px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1100;
+            z-index: 3000;
             opacity: 0;
             transition: opacity 0.3s;
             display: flex;
@@ -773,8 +773,10 @@
             right: 20px;
             display: flex;
             gap: 10px;
-            z-index: 2000;
+            z-index: 2010;
             flex-wrap: nowrap;
+            left: 20px;
+            right: auto;
         }
 
         .zoom-btn {
@@ -1048,9 +1050,9 @@
         </div>
     </div>
     <div class="zoom-controls">
-        <button class="zoom-btn" id="zoom-in"><i class="fas fa-plus"></i></button>
-        <button class="zoom-btn" id="zoom-out"><i class="fas fa-minus"></i></button>
         <button type="button" class="zoom-btn" id="zoom-reset"><i class="fas fa-sync-alt"></i></button>
+        <button class="zoom-btn" id="zoom-out"><i class="fas fa-minus"></i></button>
+        <button class="zoom-btn" id="zoom-in"><i class="fas fa-plus"></i></button>
     </div>
     <div id="employee-modal" class="modal">
         <div class="modal-content">
@@ -1115,6 +1117,7 @@
     </div>
     <script>
         let isAdmin = false;
+        let currentView = 'tree'; // default
 
         async function checkAdminStatus() {
     const token = localStorage.getItem('authToken');
@@ -1169,7 +1172,9 @@
         // Call this when the page loads
         checkAdminStatus();
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
+            await checkAdminStatus();
+            fetchEmployeeTree();
             const treeViewBtn = document.getElementById('tree-view-btn');
             const gridViewBtn = document.getElementById('grid-view-btn');
             const treeContainer = document.getElementById('tree-container');
@@ -1210,6 +1215,7 @@
             }
 
             treeViewBtn.addEventListener('click', function () {
+                currentView = 'tree';
                 treeViewBtn.classList.add('active');
                 gridViewBtn.classList.remove('active');
                 treeContainer.style.display = 'flex';
@@ -1217,6 +1223,7 @@
             });
 
             gridViewBtn.addEventListener('click', function () {
+                currentView = 'grid';
                 gridViewBtn.classList.add('active');
                 treeViewBtn.classList.remove('active');
                 gridContainer.style.display = 'grid';
@@ -1335,8 +1342,6 @@
                 });
             }
 
-            fetchEmployeeTree();
-
             function fetchEmployeeTree() {
                 fetch('/api/Values/EmployeeTree')
                     .then(response => {
@@ -1360,6 +1365,8 @@
                             updateStatistics(flattenedData);
                             addActionButtonsToEmployees();
                             addHoverEffectsToTree();
+                            updateUIForAdminStatus();
+                            restoreCurrentView();
                         } else {
                             document.getElementById('error-message').textContent = 'No employee data available';
                             document.getElementById('error-message').style.display = 'block';
@@ -1737,6 +1744,13 @@
                     showToast('Only administrators can update employees', 'error');
                     return;
                 }
+                const employeeId = document.getElementById('employee-id').value;
+    if (!employeeId) {
+        showToast('Error: No employee ID found', 'error');
+        return;
+    }
+    employeeData.id = parseInt(employeeId);
+
                 document.getElementById('save-btn').innerHTML = '<span class="spinner"></span> Saving...';
                 document.getElementById('save-btn').disabled = true;
 
@@ -1781,8 +1795,8 @@
                         return response.json();
                     })
                     .then(employee => {
-                        if (employee.managerId === 0 || employee.managerId === 1) {
-                            throw new Error('Employees with manager ID 0 or 1 cannot be deleted');
+                        if (employee.subordinates.count > 0 || employee.managerId === 0 || employee.managerId === 1) {
+                            throw new Error("Managers can't be deleted");
                         }
 
                         return fetch(`/api/Values/DeleteEmployee/${id}`, {
@@ -2009,6 +2023,20 @@
                     event.preventDefault();
                 }
             });
+
+            function restoreCurrentView() {
+                if (currentView === 'tree') {
+                    treeViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                    treeContainer.style.display = 'flex';
+                    gridContainer.style.display = 'none';
+                } else {
+                    gridViewBtn.classList.add('active');
+                    treeViewBtn.classList.remove('active');
+                    gridContainer.style.display = 'grid';
+                    treeContainer.style.display = 'none';
+                }
+            }
         });
     </script>
 </body>
