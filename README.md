@@ -4,6 +4,7 @@
 This is a full-stack web application for managing an organization's employee structure.
 The system allows administrators to add, update, delete, undo-delete,
 and explore employee details such as departments, skills, and managerial relationships.
+Admins are also able to add new departments.
 It also includes various ways to visualize and query the employee hierarchy using core data structures
 like trees, hash tables, and stacks.
 
@@ -37,6 +38,7 @@ like trees, hash tables, and stacks.
 - **Edit Employee Details**
 - **Delete Employee (with validation that managers cannot be deleted)**
 - **Undo Delete (restores the most recently deleted employee)**
+- **Add New Department**
 
 ### 🔍 Querying Features
 - **Get Employee By ID**
@@ -68,7 +70,7 @@ like trees, hash tables, and stacks.
 ## 📸 Screenshots
 
 ![Main View](https://github.com/user-attachments/assets/6cc66abf-c682-4b0e-b4c5-e45a8c36728b)
-![Skill Search & Admin Panel](https://github.com/user-attachments/assets/81d6e4e4-6e8e-46da-9a49-6f1d5af3e074)
+![Skill Search & Admin Panel](https://github.com/user-attachments/assets/fe9f94c4-f6d7-4cd1-98b9-908406cc8c9c)
 
 ## 🔁 API Endpoints
 
@@ -103,8 +105,6 @@ like trees, hash tables, and stacks.
 - `GET /api/Department`
 - `GET /api/Department/{id}`
 - `GET /api/Department/{id}/Employees`
-
-### Departments api hasn't been used in the project. You can add it by choice.
 
 ### ✅ Security Notes
 - **Passwords are stored as plain text in this demo. You must use hashing (e.g., BCrypt) in production.**
