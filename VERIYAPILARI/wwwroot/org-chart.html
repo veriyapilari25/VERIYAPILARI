@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1011,6 +1011,147 @@
         .employee-actions.admin-only {
             display: none;
         }
+
+        #department-modal .modal-content {
+            max-width: 420px;
+            width: 95%;
+            margin: 5% auto;
+            padding: 28px 24px 18px 24px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        #department-modal .modal-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        #department-modal .modal-header h2 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #department-modal .form-group {
+            margin-bottom: 20px;
+        }
+
+        #department-modal .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        #department-modal .form-group label i {
+            color: var(--primary-color);
+        }
+
+        #department-modal .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        #department-modal .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+
+        #department-modal .form-text {
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        #department-modal .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        #department-modal .form-actions button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        #department-modal .form-actions button i {
+            font-size: 0.9rem;
+        }
+
+        #department-modal .btn-outline-secondary {
+            border: 1.5px solid #e0e0e0;
+            background: #fff;
+            color: #666;
+        }
+
+        #department-modal .btn-outline-secondary:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        #department-modal .btn-primary {
+            background: linear-gradient(135deg, #4f8cff 0%, #38e8fa 100%);
+            border: none;
+            color: white;
+        }
+
+        #department-modal .btn-primary:hover {
+            background: linear-gradient(135deg, #38e8fa 0%, #4f8cff 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 140, 255, 0.2);
+        }
+
+        #department-modal .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        #department-modal .close-modal:hover {
+            color: #666;
+        }
+
+        @media (max-width: 480px) {
+            #department-modal .modal-content {
+                width: 90%;
+                margin: 10% auto;
+                padding: 20px;
+            }
+
+            #department-modal .form-actions {
+                flex-direction: column;
+            }
+
+            #department-modal .form-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
@@ -1024,6 +1165,9 @@
         <div class="action-buttons">
             <button class="btn btn-primary" id="add-employee-btn">
                 <i class="fas fa-plus"></i> Add Employee
+            </button>
+            <button class="btn btn-primary" id="add-department-btn">
+                <i class="fas fa-building"></i> Add Department
             </button>
             <button class="btn btn-outline-secondary" id="undo-delete-button" onclick="undoDeleteEmployee()" disabled>
                 <i class="fas fa-undo"></i> Undo Delete
@@ -1148,6 +1292,32 @@
                 style="background: none; border: none; color: white; cursor: pointer;">×</button>
         </div>
         <div id="debug-log"></div>
+    </div>
+    <div id="department-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-department-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="department-modal-title">Add New Department</h2>
+            </div>
+            <form id="department-form">
+                <input type="hidden" id="department-id">
+                <div class="form-group">
+                    <label for="department-name">
+                        <i class="fas fa-building"></i> Department Name
+                    </label>
+                    <input type="text" id="department-name" class="form-control" placeholder="Enter department name" required>
+                    <small class="form-text text-muted">Enter a unique name for the department</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline-secondary" id="cancel-department-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="save-department-btn">
+                        <i class="fas fa-save"></i> Save Department
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
     <script>
         let isAdmin = false;
@@ -2070,6 +2240,130 @@
                     gridContainer.style.display = 'grid';
                     treeContainer.style.display = 'none';
                 }
+            }
+
+            // Department functionality
+            const departmentModal = document.getElementById('department-modal');
+            const addDepartmentBtn = document.getElementById('add-department-btn');
+            const closeDepartmentModal = document.getElementById('close-department-modal');
+            const departmentForm = document.getElementById('department-form');
+            const cancelDepartmentBtn = document.getElementById('cancel-department-btn');
+
+            addDepartmentBtn.addEventListener('click', function() {
+                document.getElementById('department-modal-title').textContent = 'Add New Department';
+                resetDepartmentForm();
+                departmentModal.style.display = 'block';
+            });
+
+            closeDepartmentModal.addEventListener('click', function() {
+                departmentModal.style.display = 'none';
+            });
+
+            cancelDepartmentBtn.addEventListener('click', function() {
+                departmentModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === departmentModal) {
+                    departmentModal.style.display = 'none';
+                }
+            });
+
+            function resetDepartmentForm() {
+                document.getElementById('department-id').value = '';
+                document.getElementById('department-name').value = '';
+            }
+
+            departmentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const departmentData = {
+                    name: document.getElementById('department-name').value
+                };
+
+                if (document.getElementById('department-id').value) {
+                    updateDepartment(departmentData);
+                } else {
+                    addDepartment(departmentData);
+                }
+            });
+
+            function addDepartment(departmentData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can add departments', 'error');
+                    return;
+                }
+
+                document.getElementById('save-department-btn').innerHTML = '<span class="spinner"></span> Saving...';
+                document.getElementById('save-department-btn').disabled = true;
+
+                fetch('/api/Department', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(departmentData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    departmentModal.style.display = 'none';
+                    showToast('Department added successfully!', 'success');
+                    fetchDepartments();
+                    fetchEmployeeTree();
+                })
+                .catch(error => {
+                    showToast('Error: ' + (error.message || 'Failed to add department'), 'error');
+                })
+                .finally(() => {
+                    document.getElementById('save-department-btn').innerHTML = 'Save';
+                    document.getElementById('save-department-btn').disabled = false;
+                });
+            }
+
+            function updateDepartment(departmentData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can update departments', 'error');
+                    return;
+                }
+
+                const departmentId = document.getElementById('department-id').value;
+                if (!departmentId) {
+                    showToast('Error: No department ID found', 'error');
+                    return;
+                }
+
+                departmentData.id = parseInt(departmentId);
+
+                document.getElementById('save-department-btn').innerHTML = '<span class="spinner"></span> Saving...';
+                document.getElementById('save-department-btn').disabled = true;
+
+                fetch(`/api/Department/${departmentData.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(departmentData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update department');
+                    }
+                    departmentModal.style.display = 'none';
+                    showToast('Department updated successfully!', 'success');
+                    fetchDepartments();
+                    fetchEmployeeTree();
+                })
+                .catch(error => {
+                    showToast('Error: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    document.getElementById('save-department-btn').innerHTML = 'Save';
+                    document.getElementById('save-department-btn').disabled = false;
+                });
             }
         });
     </script>
