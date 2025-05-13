@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organization Login</title>
+    <title>Organization Chart</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         body {
             font-family: 'Poppins', Arial, sans-serif;
             background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
             margin: 0;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        .login-container {
+
+        .main-org-container {
             background: #fff;
             padding: 2.5rem 2rem 2rem 2rem;
             border-radius: 18px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
-            max-width: 370px;
+            max-width: 1400px;
             width: 100%;
+            margin: 2.5rem auto 2rem auto;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
         }
-        .login-logo {
+
+        .org-header-logo {
             width: 60px;
             height: 60px;
             background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
@@ -35,233 +39,2334 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.2rem;
+            margin: 0 auto 1.2rem auto;
             box-shadow: 0 2px 8px rgba(172, 182, 229, 0.2);
         }
-        .login-logo i {
+
+        .org-header-logo i {
             font-size: 2rem;
             color: #007bff;
         }
-        .login-header {
+
+        .org-header-title {
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #222;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             text-align: center;
         }
-        .form-group {
-            width: 100%;
-            margin-bottom: 1.2rem;
-            position: relative;
-            display: flex;
-            justify-content: center;
-        }
-        .form-group input {
-            width: 90%;
-            margin: 0 auto;
-            padding: 0.85rem 1rem 0.85rem 2.7rem;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: #f7f9fa;
-            transition: border 0.2s;
-            display: block;
-        }
-        .form-group input:focus {
-            border: 1.5px solid #007bff;
-            outline: none;
-            background: #fff;
-        }
-        .form-group .input-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #b0b0b0;
+
+        .org-header-desc {
             font-size: 1.1rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 2rem;
         }
-        button[type="submit"] {
-            width: 100%;
-            padding: 0.85rem;
+
+        .btn,
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger,
+        .btn-outline-secondary {
+            font-family: 'Poppins', Arial, sans-serif;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08);
+        }
+
+        .btn-primary {
             background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
             color: #fff;
             border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
+        }
+
+        .btn-outline-secondary {
+            border: 1.5px solid #e0e0e0;
+            background: #fff;
+            color: #007bff;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #e3f0ff;
+        }
+
+        .form-control,
+        .search-box input,
+        select {
             border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 1rem;
+        }
+
+        .header {
+            background: none;
+            box-shadow: none;
+            margin-bottom: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: none;
+            box-shadow: none;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e67e22;
+            --text-color: #333;
+            --light-gray: #f5f7fa;
+            --border-color: #ddd;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: modalOpen 0.3s ease-out;
+        }
+
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08);
-            margin-top: 0.5rem;
+            color: #aaa;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-actions {
+            text-align: right;
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .action-buttons {
+            margin-bottom: 1.2rem;
+            text-align: right;
+            display: flex;
+            gap: 0.7rem;
+            justify-content: flex-end;
+            padding: 0.6rem 0 0.6rem 0;
+        }
+
+        .action-buttons .btn,
+        .action-buttons .btn-primary,
+        .action-buttons .btn-outline-secondary {
+            padding: 0.55rem 1.2rem;
+            font-size: 1.03rem;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.07);
+        }
+
+        .employee-actions {
+            display: flex;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .employee-card:hover .employee-actions,
+        .employee:hover .employee-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-left: 5px;
+            color: white;
+            border: none;
+            transition: all 0.2s;
         }
-        button[type="submit"]:hover {
-            background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
+
+        .edit-btn {
+            background-color: var(--warning-color);
         }
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #007bff;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            animation: spin 1s linear infinite;
-            margin-right: 0.7rem;
+
+        .edit-btn:hover {
+            background-color: #d35400;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        .delete-btn {
+            background-color: #e74c3c;
         }
-        .error-message {
-            color: #dc3545;
-            margin-top: 1rem;
-            text-align: center;
-            background: #ffeaea;
-            border-radius: 6px;
-            padding: 0.6rem 1rem;
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.success {
+            background-color: var(--success-color);
+        }
+
+        .toast.error {
+            background-color: #e74c3c;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .confirm-modal {
             display: none;
-            font-size: 0.98rem;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
         }
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 1.5rem 0.7rem 1.2rem 0.7rem;
-                max-width: 98vw;
+
+        .confirm-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .confirm-message {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .employee {
+            position: relative;
+        }
+
+        .employee .employee-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
         }
-        .register-section {
-            margin-top: 2.2rem;
-            padding: 1.3rem 1.2rem;
-            background: linear-gradient(90deg, #e3f0ff 0%, #f9f9f9 100%);
-            border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .view-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            background-color: #f8f9fa;
+        }
+
+        .view-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s;
+            height: 100%;
+        }
+
+        .org-chart {
+            overflow: auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            min-height: 600px;
+        }
+
+        #undo-delete-button {
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #undo-delete-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #undo-delete-button .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin-right: 5px;
+        }
+
+        #undo-delete-button:hover:not(:disabled) {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #undo-delete-button .undo-count {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 18px;
+            height: 18px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .tree {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.8rem;
         }
-        .register-section span {
-            font-size: 1.12rem;
-            color: #333;
+
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+            transition: all 0.5s;
+            padding-left: 0;
         }
-        .register-btn {
-            display: inline-block;
-            padding: 0.55rem 1.7rem;
-            background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
-            color: #fff;
-            border-radius: 7px;
+
+        .tree li {
+            float: left;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+            transition: all 0.5s;
+        }
+
+        .tree li::before,
+        .tree li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 1px solid #ccc;
+            width: 50%;
+            height: 20px;
+        }
+
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 1px solid #ccc;
+        }
+
+        .tree li:only-child::after,
+        .tree li:only-child::before {
+            display: none;
+        }
+
+        .tree li:only-child {
+            padding-top: 0;
+        }
+
+        .tree li:first-child::before,
+        .tree li:last-child::after {
+            border: 0 none;
+        }
+
+        .tree li:last-child::before {
+            border-right: 1px solid #ccc;
+            border-radius: 0 5px 0 0;
+        }
+
+        .tree li:first-child::after {
+            border-radius: 5px 0 0 0;
+        }
+
+        .tree ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 1px solid #ccc;
+            width: 0;
+            height: 20px;
+        }
+
+        .tree li .employee {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-            border: none;
+            color: #333;
+            display: inline-block;
+            border-radius: 5px;
+            transition: all 0.5s;
+            background-color: #fff;
+            min-width: 150px;
+            margin-top: 10px;
+            position: relative;
         }
-        .register-btn:hover {
-            background: linear-gradient(90deg, #0056b3 0%, #74ebd5 100%);
-            color: #fff;
+
+        .tree li .employee:hover,
+        .tree li .employee:hover+ul li .employee {
+            background: #e2f0ff !important;
+            color: white !important;
+            border: 1px solid #0066cc !important;
+            transition: all 0.3s;
         }
-        .register-section-alt {
-            margin-top: 2rem;
+
+        .tree li .employee:hover+ul li::after,
+        .tree li .employee:hover+ul li::before,
+        .tree li .employee:hover+ul::before,
+        .tree li .employee:hover+ul ul::before {
+            border-color: #0066cc !important;
+            transition: all 0.3s;
+        }
+
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .employee-card {
+            position: relative;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            text-decoration: none;
+            color: var(--text-color);
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.05rem;
-            color: #444;
+            flex-direction: column;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: #fff;
+            min-height: 160px;
         }
-        .register-link-alt {
-            color: #007bff;
+
+        .employee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .employee-card.manager {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .employee-card .name {
+            font-size: 1.2rem;
             font-weight: 600;
-            text-decoration: underline;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            max-width: 180px;
+            /* or whatever fits your design */
+            white-space: normal;
+            /* allow wrapping */
+            word-break: break-word;
+            /* break long words if needed */
+            overflow-wrap: break-word;
+        }
+
+        .employee-card .position {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .employee-card .department {
+            padding: 5px 10px;
+            background-color: #f0f8ff;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .employee-card .meta {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .employee-card .id {
+            background-color: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .employee-card .subordinates-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .skills-list {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .skill-badge {
+            background: #e3f0ff;
+            color: #007bff;
+            border-radius: 12px;
+            padding: 2px 10px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.employees {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--primary-color);
+        }
+
+        .stat-icon.departments {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
+
+        .stat-icon.managers {
+            background-color: rgba(230, 126, 34, 0.2);
+            color: var(--accent-color);
+        }
+
+        .stat-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-content p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1rem;
+            background-color: #fdf2f2;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+            color: #777;
+        }
+
+        .loading i {
+            margin-right: 10px;
+            animation: spin 1s infinite linear;
+        }
+
+        .zoom-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 2010;
+            flex-wrap: nowrap;
+            left: 20px;
+            right: auto;
+        }
+
+        .zoom-btn {
+            z-index: 2010;
+            position: relative;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f8cff 0%, #38e8fa 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(79, 140, 255, 0.18);
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: linear-gradient(135deg, #38e8fa 0%, #4f8cff 100%);
+            transform: scale(1.12);
+            box-shadow: 0 4px 16px rgba(56, 232, 250, 0.18);
+        }
+
+        /* Make the reset button a different accent color */
+        /* #zoom-reset.zoom-btn {
+                background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+                color: #fff;
+            }
+
+            #zoom-reset.zoom-btn:hover {
+                background: linear-gradient(135deg, #feb47b 0%, #ff7e5f 100%);
+            } */
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            min-height: 38px;
+        }
+
+        .select2-container--default .select2-selection {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .org-chart {
+                padding: 1rem;
+            }
+
+            .view-options {
+                justify-content: center;
+            }
+
+            .stat-card {
+                min-width: 100%;
+            }
+        }
+
+        #employee-modal .modal-content {
+            max-width: 420px;
+            width: 95%;
+            margin: 5% auto;
+            padding: 28px 24px 18px 24px;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+        }
+
+        #employee-modal .modal-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        #employee-modal .modal-header h2 {
+            font-size: 1.3rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        #employee-modal .form-group {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #employee-modal .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        #employee-modal .form-control {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background: #fafbfc;
+        }
+
+        #employee-modal .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.13);
+        }
+
+        #employee-modal .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        #employee-modal .form-actions button,
+        .confirm-actions button {
+            padding: 0.45rem 1.1rem;
+            font-size: 0.98rem;
+            border-radius: 5px;
+            font-weight: 600;
+            min-width: 90px;
+            margin-left: 0.3rem;
+            margin-right: 0.3rem;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.07);
+            border: none;
+            transition: background 0.18s, color 0.18s;
+        }
+
+        #manager.form-control {
+            max-height: 160px;
+            overflow-y: auto;
+            display: block;
+        }
+
+        .confirm-actions .btn-danger {
+            background: #e74c3c !important;
+            color: #fff !important;
+            border: none !important;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.15);
+        }
+
+        .confirm-actions .btn-danger:hover {
+            background: #c0392b !important;
+            color: #fff !important;
+        }
+
+        .action-buttons.admin-only {
+            display: none;
+        }
+
+        .employee-actions.admin-only {
+            display: none;
+        }
+
+        #department-modal .modal-content {
+            max-width: 420px;
+            width: 95%;
+            margin: 5% auto;
+            padding: 28px 24px 18px 24px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        #department-modal .modal-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        #department-modal .modal-header h2 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #department-modal .form-group {
+            margin-bottom: 20px;
+        }
+
+        #department-modal .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        #department-modal .form-group label i {
+            color: var(--primary-color);
+        }
+
+        #department-modal .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        #department-modal .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+
+        #department-modal .form-text {
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        #department-modal .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        #department-modal .form-actions button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        #department-modal .form-actions button i {
+            font-size: 0.9rem;
+        }
+
+        #department-modal .btn-outline-secondary {
+            border: 1.5px solid #e0e0e0;
+            background: #fff;
+            color: #666;
+        }
+
+        #department-modal .btn-outline-secondary:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        #department-modal .btn-primary {
+            background: linear-gradient(135deg, #4f8cff 0%, #38e8fa 100%);
+            border: none;
+            color: white;
+        }
+
+        #department-modal .btn-primary:hover {
+            background: linear-gradient(135deg, #38e8fa 0%, #4f8cff 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 140, 255, 0.2);
+        }
+
+        #department-modal .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
             transition: color 0.2s;
         }
-        .register-link-alt:hover {
-            color: #0056b3;
-            text-decoration: none;
+
+        #department-modal .close-modal:hover {
+            color: #666;
         }
-        .admin-only {
-            display: none;
+
+        @media (max-width: 480px) {
+            #department-modal .modal-content {
+                width: 90%;
+                margin: 10% auto;
+                padding: 20px;
+            }
+
+            #department-modal .form-actions {
+                flex-direction: column;
+            }
+
+            #department-modal .form-actions button {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <div class="login-logo">
+    <div class="main-org-container">
+        <div class="org-header-logo">
             <i class="fa-solid fa-users"></i>
         </div>
-        <div class="login-header">Sign in to Organization</div>
-        <form id="loginForm">
-            <div class="form-group">
-                <span class="input-icon"><i class="fa-solid fa-user"></i></span>
-                <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username">
-            </div>
-            <div class="form-group">
-                <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-                <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password">
-            </div>
-            <button type="submit" id="loginBtn">
-                <span id="spinner" class="spinner" style="display:none;"></span>
-                <span id="btnText">Login</span>
+        <div class="org-header-title">Organization Chart</div>
+        <div class="org-header-desc">View and explore your company's organizational structure</div>
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="add-employee-btn">
+                <i class="fas fa-plus"></i> Add Employee
             </button>
-            <div id="errorMessage" class="error-message"></div>
-        </form>
-        <div class="register-section-alt">
-            <span>Don't have an account?</span>
-            <a href="register.html" class="register-link-alt">Register</a>
+            <button class="btn btn-primary" id="add-department-btn">
+                <i class="fas fa-building"></i> Add Department
+            </button>
+            <button class="btn btn-outline-secondary" id="undo-delete-button" onclick="undoDeleteEmployee()" disabled>
+                <i class="fas fa-undo"></i> Undo Delete
+            </button>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-icon employees">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="employee-count">0</h3>
+                    <p>Total Employees</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon departments">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="department-count">0</h3>
+                    <p>Departments</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon managers">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="manager-count">0</h3>
+                    <p>Managers</p>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search by name, skill, or department...">
+            </div>
+            <div class="view-options">
+                <button class="view-btn active" id="tree-view-btn">
+                    <i class="fas fa-sitemap"></i> Tree View
+                </button>
+                <button class="view-btn" id="grid-view-btn">
+                    <i class="fas fa-th-large"></i> Grid View
+                </button>
+            </div>
+        </div>
+        <div class="org-chart">
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner"></i> Loading organization data...
+            </div>
+            <div id="tree-container" class="tree" style="display: none;"></div>
+            <div id="grid-container" class="grid-view" style="display: none;"></div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+        </div>
+    </div>
+    <div class="zoom-controls">
+        <button type="button" class="zoom-btn" id="zoom-reset"><i class="fas fa-sync-alt"></i></button>
+        <button class="zoom-btn" id="zoom-out"><i class="fas fa-minus"></i></button>
+        <button class="zoom-btn" id="zoom-in"><i class="fas fa-plus"></i></button>
+    </div>
+    <div id="employee-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-employee-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Employee</h2>
+            </div>
+            <form id="employee-form">
+                <input type="hidden" id="employee-id">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" class="form-control" required>
+                        <option value="">Select Department</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="manager">Manager</label>
+                    <select id="manager" class="form-control">
+                        <option value="">No Manager (Top Level)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <select id="skills" class="form-control" multiple>
+                    </select>
+                    <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple skills</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="confirm-modal" class="confirm-modal">
+        <div class="confirm-content">
+            <div class="confirm-message">Are you sure you want to delete this employee?</div>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" id="cancel-delete">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message"></span>
+    </div>
+    <div id="debug-panel"
+        style="position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; background: rgba(0,0,0,0.8); color: #00ff00; padding: 10px; font-family: monospace; font-size: 12px; overflow: auto; z-index: 9999; display: none;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <strong>Debug Console</strong>
+            <button onclick="document.getElementById('debug-panel').style.display='none'"
+                style="background: none; border: none; color: white; cursor: pointer;">×</button>
+        </div>
+        <div id="debug-log"></div>
+    </div>
+    <div id="department-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-department-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="department-modal-title">Add New Department</h2>
+            </div>
+            <form id="department-form">
+                <input type="hidden" id="department-id">
+                <div class="form-group">
+                    <label for="department-name">
+                        <i class="fas fa-building"></i> Department Name
+                    </label>
+                    <input type="text" id="department-name" class="form-control" placeholder="Enter department name" required>
+                    <small class="form-text text-muted">Enter a unique name for the department</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline-secondary" id="cancel-department-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="save-department-btn">
+                        <i class="fas fa-save"></i> Save Department
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <script>
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const spinner = document.getElementById('spinner');
-        const btnText = document.getElementById('btnText');
-        const errorMessage = document.getElementById('errorMessage');
+        let isAdmin = false;
+        let currentView = 'tree'; // default
 
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            spinner.style.display = 'inline-block';
-            btnText.textContent = 'Logging in...';
-            loginBtn.disabled = true;
-            errorMessage.style.display = 'none';
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        async function checkAdminStatus() {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.error('No auth token found');
+                isAdmin = false;
+                updateUIForAdminStatus();
+                return;
+            }
 
             try {
-                const response = await fetch('/api/auth/login', {
+                const response = await fetch('/api/Auth/CheckAdminStatus', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    console.error('Unauthorized - Please login');
+                    isAdmin = false;
+                    updateUIForAdminStatus();
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error('Failed to check admin status');
+                }
+
+                const data = await response.json();
+                isAdmin = data.isAdmin;
+                updateUIForAdminStatus();
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                isAdmin = false;
+                updateUIForAdminStatus();
+            }
+        }
+
+        function updateUIForAdminStatus() {
+            const actionButtons = document.querySelector('.action-buttons');
+            const employeeActions = document.querySelectorAll('.employee-actions');
+
+            if (isAdmin) {
+                actionButtons.classList.remove('admin-only');
+                employeeActions.forEach(action => action.classList.remove('admin-only'));
+            } else {
+                actionButtons.classList.add('admin-only');
+                employeeActions.forEach(action => action.classList.add('admin-only'));
+            }
+        }
+
+        // Call this when the page loads
+        checkAdminStatus();
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            await checkAdminStatus();
+            fetchEmployeeTree();
+            const treeViewBtn = document.getElementById('tree-view-btn');
+            const gridViewBtn = document.getElementById('grid-view-btn');
+            const treeContainer = document.getElementById('tree-container');
+            const gridContainer = document.getElementById('grid-container');
+            const employeeModal = document.getElementById('employee-modal');
+            const closeEmployeeModal = document.getElementById('close-employee-modal');
+            const addEmployeeBtn = document.getElementById('add-employee-btn');
+            const employeeForm = document.getElementById('employee-form');
+            const confirmModal = document.getElementById('confirm-modal');
+            const cancelDelete = document.getElementById('cancel-delete');
+            const confirmDelete = document.getElementById('confirm-delete');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const undoButton = document.getElementById('undo-delete-button');
+
+            let departments = [];
+            let employees = [];
+            let currentEmployeeId = null;
+
+            checkUndoAvailability();
+            setInterval(checkUndoAvailability, 30000);
+
+            const zoomInBtn = document.getElementById('zoom-in');
+            const zoomOutBtn = document.getElementById('zoom-out');
+            const zoomResetBtn = document.getElementById('zoom-reset');
+            let currentZoom = 1;
+
+            const searchInput = document.getElementById('search-input');
+
+            const employeeCountElement = document.getElementById('employee-count');
+            const departmentCountElement = document.getElementById('department-count');
+            const managerCountElement = document.getElementById('manager-count');
+
+            if (undoButton) {
+                undoButton.addEventListener('click', function () {
+                    undoDeleteEmployee();
+                });
+            }
+
+            treeViewBtn.addEventListener('click', function () {
+                currentView = 'tree';
+                treeViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                treeContainer.style.display = 'flex';
+                gridContainer.style.display = 'none';
+            });
+
+            gridViewBtn.addEventListener('click', function () {
+                currentView = 'grid';
+                gridViewBtn.classList.add('active');
+                treeViewBtn.classList.remove('active');
+                gridContainer.style.display = 'grid';
+                treeContainer.style.display = 'none';
+            });
+
+            zoomInBtn.addEventListener('click', function () {
+                if (currentZoom < 2) {
+                    currentZoom += 0.1;
+                    applyZoom();
+                }
+            });
+
+            zoomOutBtn.addEventListener('click', function () {
+                if (currentZoom > 0.5) {
+                    currentZoom -= 0.1;
+                    applyZoom();
+                }
+            });
+
+            if (zoomResetBtn) {
+                zoomResetBtn.addEventListener('click', function () {
+                    currentZoom = 1;
+                    applyZoom();
+                });
+            }
+
+            function applyZoom() {
+                treeContainer.style.transform = `scale(${currentZoom})`;
+                treeContainer.style.transformOrigin = 'top center';
+            }
+
+            searchInput.addEventListener('input', async function () {
+                const searchTerm = this.value.toLowerCase();
+
+                resetAllHighlighting();
+
+                if (searchTerm === '') {
+                    resetGridFiltering();
+                    return;
+                }
+
+                const matchingEmployeesBySkill = await fetchEmployeesBySkill(searchTerm);
+                const skillMatchedEmployeeIds = new Set(matchingEmployeesBySkill.map(e => e.id));
+
+                if (treeViewBtn.classList.contains('active')) {
+                    const employeeNodes = treeContainer.querySelectorAll('.employee');
+                    employeeNodes.forEach(node => {
+                        const name = node.querySelector('.name')?.textContent.toLowerCase() || '';
+                        const position = node.querySelector('.position')?.textContent.toLowerCase() || '';
+                        const department = node.querySelector('.department')?.textContent.toLowerCase() || '';
+                        const employeeId = parseInt(node.dataset.id);
+
+                        const textMatch = name.includes(searchTerm) || position.includes(searchTerm) || department.includes(searchTerm);
+                        const skillMatch = skillMatchedEmployeeIds.has(employeeId);
+
+                        if (textMatch || skillMatch) {
+                            node.style.backgroundColor = '#fffde7';
+                            node.style.borderColor = '#ffd54f';
+                            node.dataset.highlighted = 'search';
+                        }
+                    });
+                } else {
+                    const employeeCards = gridContainer.querySelectorAll('.employee-card');
+                    employeeCards.forEach(card => {
+                        const name = card.querySelector('.name')?.textContent.toLowerCase() || '';
+                        const position = card.querySelector('.position')?.textContent.toLowerCase() || '';
+                        const department = card.querySelector('.department')?.textContent.toLowerCase() || '';
+                        const employeeId = parseInt(card.dataset.id);
+
+                        const textMatch = name.includes(searchTerm) || position.includes(searchTerm) || department.includes(searchTerm);
+                        const skillMatch = skillMatchedEmployeeIds.has(employeeId);
+
+                        if (textMatch || skillMatch) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            async function fetchEmployeesBySkill(skill) {
+                try {
+                    const response = await fetch(`/api/Values/GetEmployeesBySkill?skill=${encodeURIComponent(skill)}`);
+                    if (!response.ok) {
+                        return [];
+                    }
+                    const employees = await response.json();
+                    return employees;
+                } catch (error) {
+                    console.error('Error fetching employees by skill:', error);
+                    return [];
+                }
+            }
+
+            function resetAllHighlighting() {
+                const allEmployeeNodes = document.querySelectorAll('#tree-container .employee');
+                allEmployeeNodes.forEach(node => {
+                    node.style.backgroundColor = '';
+                    node.style.borderColor = '';
+                    node.style.color = '';
+                    node.dataset.highlighted = '';
+                });
+
+                const allEmployeeCards = document.querySelectorAll('#grid-container .employee-card');
+                allEmployeeCards.forEach(card => {
+                    card.style.display = 'flex';
+                });
+            }
+
+            function resetGridFiltering() {
+                const allEmployeeCards = document.querySelectorAll('#grid-container .employee-card');
+                allEmployeeCards.forEach(card => {
+                    card.style.display = 'flex';
+                });
+            }
+
+            function fetchEmployeeTree() {
+                fetch('/api/Values/EmployeeTree')
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Response status:', response.status);
+                            console.error('Response statusText:', response.statusText);
+                            return response.text().then(text => {
+                                throw new Error(`Failed to fetch employee tree: ${response.status} ${response.statusText} - ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('tree-container').style.display = 'flex';
+
+                        if (data && data.length > 0) {
+                            renderOrganizationTree(data);
+                            const flattenedData = flattenEmployeeTree(data);
+                            renderGridView(flattenedData);
+                            updateStatistics(flattenedData);
+                            addActionButtonsToEmployees();
+                            addHoverEffectsToTree();
+                            updateUIForAdminStatus();
+                            restoreCurrentView();
+                        } else {
+                            document.getElementById('error-message').textContent = 'No employee data available';
+                            document.getElementById('error-message').style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('error-message').textContent = 'Error loading data: ' + error.message;
+                        document.getElementById('error-message').style.display = 'block';
+                        console.error('Detailed fetch error:', error);
+                    });
+            }
+
+            function addHoverEffectsToTree() {
+                const employeeNodes = document.querySelectorAll('#tree-container .employee');
+
+                employeeNodes.forEach(node => {
+                    node.addEventListener('mouseenter', function () {
+                        const employeeId = this.dataset.id;
+                        highlightEmployeeAndSubordinates(employeeId);
+                    });
+
+                    node.addEventListener('mouseleave', function () {
+                        resetHighlighting();
+                    });
+                });
+            }
+
+            function highlightEmployeeAndSubordinates(employeeId) {
+                resetHighlighting();
+
+                const employeeNode = document.querySelector(`.employee[data-id="${employeeId}"]`);
+                if (!employeeNode) return;
+
+                employeeNode.style.backgroundColor = '#4da6ff';
+                employeeNode.style.borderColor = '#0066cc';
+                employeeNode.style.color = 'white';
+
+                const parentLi = employeeNode.closest('li');
+                if (parentLi) {
+                    const subordinatesList = parentLi.querySelector('ul');
+                    if (subordinatesList) {
+                        const subordinateNodes = subordinatesList.querySelectorAll('.employee');
+                        subordinateNodes.forEach(node => {
+                            node.style.backgroundColor = '#4da6ff';
+                            node.style.borderColor = '#0066cc';
+                            node.style.color = 'white';
+                        });
+                    }
+                }
+            }
+            function resetHighlighting() {
+                const allEmployeeNodes = document.querySelectorAll('#tree-container .employee');
+                allEmployeeNodes.forEach(node => {
+                    node.style.backgroundColor = '';
+                    node.style.borderColor = '';
+                    node.style.color = '';
+                });
+            }
+
+            function renderOrganizationTree(data) {
+                const treeContainer = document.getElementById('tree-container');
+
+                const html = createTreeHTML(data);
+                treeContainer.innerHTML = html;
+            }
+
+            function createTreeHTML(nodes) {
+                if (!nodes || nodes.length === 0) return '';
+
+                let html = '<ul>';
+
+                nodes.forEach(node => {
+                    html += '<li>';
+                    html += `<div class="employee" data-id="${node.id}" style="border: 1px solid #ccc; padding: 10px 15px; text-decoration: none; color: #333; display: inline-block; border-radius: 5px; transition: all 0.5s; background-color: #fff; min-width: 150px; margin-top: 10px; position: relative;">
+                                            <div class="name" style="font-weight: bold; color: var(--primary-color);">${node.name}</div>
+                                            <div class="position" style="font-size: 14px; font-weight: bold; margin-top: 5px;">${node.position || 'No Position'}</div>
+                                            <div class="department" style="font-size: 12px; color: #666; margin-top: 5px;">${node.departmentName || 'No Department'}</div>
+                                            <div style="font-size: 10px; color: #999; margin-top: 5px;">ID: ${node.id}</div>
+                                         </div>`;
+
+                    if (node.subordinates && node.subordinates.length > 0) {
+                        html += createTreeHTML(node.subordinates);
+                    }
+
+                    html += '</li>';
+                });
+
+                html += '</ul>';
+                return html;
+            }
+
+            function renderGridView(employees) {
+                const gridContainer = document.getElementById('grid-container');
+                gridContainer.innerHTML = '';
+
+                employees.forEach(emp => {
+                    const card = document.createElement('div');
+                    card.className = 'employee-card' + ((emp.subordinates && emp.subordinates.length > 0) ? ' manager' : '');
+                    card.dataset.id = emp.id;
+
+                    let html = `
+                                    <div class="name">${emp.name}</div>
+                                    <div class="position">${emp.position || 'No Position'}</div>
+                                    <div class="department">${emp.departmentName || 'No Department'}</div>
+                                    <div class="meta">
+                                        <div class="id">ID: ${emp.id}</div>
+                                        <div class="subordinates-count">
+                                            <i class="fas fa-user-friends"></i> ${emp.subordinates ? emp.subordinates.length : 0}
+                                        </div>
+                                    </div>
+                                `;
+
+                    if (emp.managerName) {
+                        html += `<div class="badge">Reports to: ${emp.managerName}</div>`;
+                    }
+
+                    if (emp.skills && emp.skills.length > 0) {
+                        html += `<div class="skills-list">` +
+                            emp.skills.map(skill => `<span class="skill-badge">${skill}</span>`).join(' ') +
+                            `</div>`;
+                    }
+
+                    card.innerHTML = html;
+                    gridContainer.appendChild(card);
+                });
+            }
+
+            function flattenEmployeeTree(tree, result = []) {
+                tree.forEach(node => {
+                    result.push(node);
+                    if (node.subordinates && node.subordinates.length > 0) {
+                        flattenEmployeeTree(node.subordinates, result);
+                    }
+                });
+                return result;
+            }
+
+            function updateStatistics(employees) {
+                employeeCountElement.textContent = employees.length;
+
+                const departments = new Set();
+                employees.forEach(emp => {
+                    if (emp.departmentName) {
+                        departments.add(emp.departmentName);
+                    }
+                });
+                departmentCountElement.textContent = departments.size;
+
+                const managers = employees.filter(emp => emp.subordinates && emp.subordinates.length > 0);
+                managerCountElement.textContent = managers.length;
+            }
+
+            initializeEmployeeActions();
+            fetchDepartments();
+
+            function initializeEmployeeActions() {
+                addEmployeeBtn.addEventListener('click', function () {
+                    document.getElementById('modal-title').textContent = 'Add New Employee';
+                    resetForm();
+                    employeeModal.style.display = 'block';
+                });
+
+                closeEmployeeModal.addEventListener('click', function () {
+                    employeeModal.style.display = 'none';
+                });
+
+                document.getElementById('cancel-btn').addEventListener('click', function () {
+                    employeeModal.style.display = 'none';
+                });
+
+                window.addEventListener('click', function (event) {
+                    if (event.target === employeeModal) {
+                        employeeModal.style.display = 'none';
+                    }
+                    if (event.target === confirmModal) {
+                        confirmModal.style.display = 'none';
+                    }
+                });
+
+                employeeForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const skillsSelect = document.getElementById('skills');
+                    const selectedSkills = $(skillsSelect).select2('data').map(item => item.text);
+                    const employeeData = {
+                        name: document.getElementById('name').value,
+                        position: document.getElementById('position').value,
+                        departmentId: parseInt(document.getElementById('department').value),
+                        managerId: document.getElementById('manager').value ? parseInt(document.getElementById('manager').value) : null,
+                        skills: selectedSkills
+                    };
+
+                    if (document.getElementById('employee-id').value) {
+                        updateEmployee(employeeData);
+                    } else {
+                        addEmployee(employeeData);
+                    }
+                });
+
+                cancelDelete.addEventListener('click', function () {
+                    confirmModal.style.display = 'none';
+                });
+
+                confirmDelete.addEventListener('click', function () {
+                    if (currentEmployeeId) {
+                        deleteEmployee(currentEmployeeId);
+                    }
+                });
+            }
+
+            function resetForm() {
+                document.getElementById('employee-id').value = '';
+                document.getElementById('name').value = '';
+                document.getElementById('position').value = '';
+                document.getElementById('department').value = '';
+                document.getElementById('manager').value = '';
+                $('#skills').val(null).trigger('change');
+                populateManagerDropdown();
+                loadSkillsDropdown();
+            }
+
+            function fetchDepartments() {
+                fetch('/api/Department')
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Response status:', response.status);
+                            console.error('Response statusText:', response.statusText);
+                            return response.text().then(text => {
+                                throw new Error(`Failed to fetch departments: ${response.status} ${response.statusText} - ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        departments = data;
+                        populateDepartmentDropdown();
+                        fetchEmployees();
+                    })
+                    .catch(error => {
+                        console.error('Detailed fetch error:', error);
+                        showToast('Error fetching departments: ' + error.message, 'error');
+                    });
+            }
+
+            function fetchEmployees() {
+                fetch('/api/Values/GetEmployees')
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Response status:', response.status);
+                            console.error('Response statusText:', response.statusText);
+                            return response.text().then(text => {
+                                throw new Error(`Failed to fetch employees: ${response.status} ${response.statusText} - ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        employees = data;
+                        populateManagerDropdown();
+                        addActionButtonsToEmployees();
+                    })
+                    .catch(error => {
+                        console.error('Detailed fetch error:', error);
+                        showToast('Error fetching employees: ' + error.message, 'error');
+                    });
+            }
+
+            function populateDepartmentDropdown() {
+                const departmentSelect = document.getElementById('department');
+                departmentSelect.innerHTML = '<option value="">Select Department</option>';
+
+                departments.forEach(dept => {
+                    const option = document.createElement('option');
+                    option.value = dept.id;
+                    option.textContent = dept.name;
+                    departmentSelect.appendChild(option);
+                });
+            }
+            function populateManagerDropdown() {
+                const managerSelect = document.getElementById('manager');
+                managerSelect.innerHTML = '<option value="">No Manager (Top Level)</option>';
+
+                employees.forEach(emp => {
+                    const option = document.createElement('option');
+                    option.value = emp.id;
+                    option.textContent = emp.name + ' (' + emp.position + ')';
+
+                    const currentId = document.getElementById('employee-id').value;
+                    if (currentId && emp.id === parseInt(currentId)) {
+                        option.disabled = true;
+                    }
+
+                    managerSelect.appendChild(option);
+                });
+            }
+
+            function addEmployee(employeeData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can add employees', 'error');
+                    return;
+                }
+                document.getElementById('save-btn').innerHTML = '<span class="spinner"></span> Saving...';
+                document.getElementById('save-btn').disabled = true;
+                console.log('Sending to server:', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(employeeData),
+                });
+                console.log('Sending employee data:', employeeData);
+
+                fetch('/api/Values/PostEmployee', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(employeeData),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text) });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        employeeModal.style.display = 'none';
+                        showToast('Employee added successfully!', 'success');
+                        fetchEmployeeTree();
+                    })
+                    .catch(error => {
+                        console.error('Full error:', error);
+                        showToast('Error: ' + (error.message || 'Failed to add employee'), 'error');
+                    })
+                    .finally(() => {
+                        document.getElementById('save-btn').innerHTML = 'Save';
+                        document.getElementById('save-btn').disabled = false;
+                    });
+            }
+            function loadSkillsDropdown(employeeSkills = []) {
+                const skillsSelect = document.getElementById('skills');
+
+                if ($(skillsSelect).hasClass('select2-hidden-accessible')) {
+                    $(skillsSelect).select2('destroy');
+                }
+
+                skillsSelect.innerHTML = '';
+
+                const commonSkills = [
+                    'C#', 'ASP.NET', 'JavaScript', 'React', 'Angular',
+                    'SQL', 'Entity Framework', 'HTML/CSS', 'Python',
+                    'Project Management', 'Leadership', 'Communication',
+                    'Problem Solving', 'Git', 'Docker', 'Azure', 'AWS'
+                ];
+
+                commonSkills.forEach(skill => {
+                    const option = document.createElement('option');
+                    option.value = skill;
+                    option.textContent = skill;
+                    if (employeeSkills.includes(skill)) {
+                        option.selected = true;
+                    }
+                    skillsSelect.appendChild(option);
+                });
+
+                $(skillsSelect).select2({
+                    placeholder: 'Select skills...',
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
+
+            function updateEmployee(employeeData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can update employees', 'error');
+                    return;
+                }
+                const employeeId = document.getElementById('employee-id').value;
+                if (!employeeId) {
+                    showToast('Error: No employee ID found', 'error');
+                    return;
+                }
+                employeeData.id = parseInt(employeeId);
+
+                document.getElementById('save-btn').innerHTML = '<span class="spinner"></span> Saving...';
+                document.getElementById('save-btn').disabled = true;
+
+                fetch(`/api/Values/UpdateEmployee/${employeeData.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(employeeData),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update employee');
+                        }
+                        employeeModal.style.display = 'none';
+                        showToast('Employee updated successfully!', 'success');
+                        fetchEmployeeTree();
+                    })
+                    .catch(error => {
+                        showToast('Error: ' + error.message, 'error');
+                        console.error('Error updating employee:', error);
+                    })
+                    .finally(() => {
+                        document.getElementById('save-btn').innerHTML = 'Save';
+                        document.getElementById('save-btn').disabled = false;
+                    });
+            }
+
+            function deleteEmployee(id) {
+                if (!isAdmin) {
+                    showToast('Only administrators can delete employees', 'error');
+                    return;
+                }
+                document.getElementById('confirm-delete').innerHTML = '<span class="spinner"></span> Deleting...';
+                document.getElementById('confirm-delete').disabled = true;
+
+                fetch(`/api/Values/GetEmployeeByID/${id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to get employee data');
+                        }
+                        return response.json();
+                    })
+                    .then(employee => {
+                        if (employee.subordinates.count > 0 || employee.managerId === 0 || employee.managerId === 1) {
+                            throw new Error("Managers can't be deleted");
+                        }
+
+                        return fetch(`/api/Values/DeleteEmployee/${id}`, {
+                            method: 'DELETE',
+                        });
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete employee');
+                        }
+                        confirmModal.style.display = 'none';
+                        showToast('Employee deleted successfully!', 'success');
+                        fetchEmployeeTree();
+                    })
+                    .then(() => {
+                        return fetchEmployees();
+                    })
+                    .then(() => {
+                        populateManagerDropdown();
+                        checkUndoAvailability();
+                    })
+                    .catch(error => {
+                        showToast('Error: ' + error.message, 'error');
+                        console.error('Error deleting employee:', error);
+                    })
+                    .finally(() => {
+                        document.getElementById('confirm-delete').innerHTML = 'Delete';
+                        document.getElementById('confirm-delete').disabled = false;
+                    });
+            }
+            function checkUndoAvailability() {
+                fetch('/api/Values/GetUndoCount')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to get undo count');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Undo count data:', data);
+
+                        const undoButton = document.getElementById('undo-delete-button');
+                        if (undoButton) {
+                            const count = data.count !== undefined ? data.count : 0;
+
+                            console.log('Parsed count:', count);
+
+                            if (count > 0) {
+                                undoButton.disabled = false;
+                                undoButton.title = `Undo last deletion (${count} available)`;
+
+                                if (!document.querySelector('#undo-delete-button .undo-count')) {
+                                    const countBadge = document.createElement('span');
+                                    countBadge.className = 'undo-count';
+                                    countBadge.textContent = count;
+                                    undoButton.appendChild(countBadge);
+                                } else {
+                                    document.querySelector('#undo-delete-button .undo-count').textContent = count;
+                                }
+                            } else {
+                                undoButton.disabled = true;
+                                undoButton.title = 'No deletions to undo';
+
+                                const countBadge = document.querySelector('#undo-delete-button .undo-count');
+                                if (countBadge) {
+                                    countBadge.remove();
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking undo availability:', error);
+                    });
+            }
+
+            function undoDeleteEmployee() {
+                if (!isAdmin) {
+                    showToast('Only administrators can undo deletions', 'error');
+                    return;
+                }
+                const undoButton = document.getElementById('undo-delete-button');
+                const originalContent = undoButton.innerHTML;
+
+                undoButton.innerHTML = '<span class="spinner"></span> Restoring...';
+                undoButton.disabled = true;
+
+                fetch('/api/Values/UndoDeleteEmployee', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(text || 'Failed to restore employee');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(employee => {
+                        console.log('Restored employee:', employee);
+                        showToast(`Employee "${employee.name}" has been restored!`, 'success');
+
+                        fetchEmployeeTree();
+
+                        checkUndoAvailability();
+                    })
+                    .catch(error => {
+                        console.error('Error in undo delete:', error);
+                        showToast('Error: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        undoButton.innerHTML = '<i class="fas fa-undo"></i> Undo Delete';
+
+                        checkUndoAvailability();
+                    });
+            }
+
+            function showToast(message, type = 'success') {
+                toastMessage.textContent = message;
+                toast.className = 'toast ' + type + ' show';
+
+                setTimeout(() => {
+                    toast.className = toast.className.replace(' show', '');
+                }, 3000);
+            }
+
+            function addActionButtonsToEmployees() {
+                const treeEmployees = document.querySelectorAll('#tree-container .employee');
+                treeEmployees.forEach(emp => {
+                    addActionButtonsToElement(emp);
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    localStorage.setItem('authToken', data.token);
-                    window.location.href = '/org-chart.html';
+                const gridEmployees = document.querySelectorAll('#grid-container .employee-card');
+                gridEmployees.forEach(emp => {
+                    addActionButtonsToElement(emp);
+                });
+            }
+
+            function addActionButtonsToElement(element) {
+                if (element.querySelector('.employee-actions')) return;
+
+                const actions = document.createElement('div');
+                actions.className = 'employee-actions admin-only';
+
+                let id;
+                if (element.dataset.id) {
+                    id = parseInt(element.dataset.id);
                 } else {
-                    const error = await response.json();
-                    errorMessage.textContent = error.message || 'Login failed';
-                    errorMessage.style.display = 'block';
+                    const idElement = element.querySelector('[style*="ID:"]') || element.querySelector('.id');
+                    if (!idElement) return;
+
+                    const idText = idElement.textContent;
+                    id = parseInt(idText.replace('ID:', '').trim());
                 }
-            } catch (error) {
-                errorMessage.textContent = 'An error occurred. Please try again.';
-                errorMessage.style.display = 'block';
-            } finally {
-                spinner.style.display = 'none';
-                btnText.textContent = 'Login';
-                loginBtn.disabled = false;
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'action-btn edit-btn';
+                editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEditModal(id);
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'action-btn delete-btn';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openDeleteConfirmation(id);
+                });
+
+                actions.appendChild(editBtn);
+                actions.appendChild(deleteBtn);
+                element.appendChild(actions);
+            }
+
+            function openEditModal(id) {
+                fetch(`/api/Values/GetEmployeeByID/${id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch employee details');
+                        }
+                        return response.json();
+                    })
+                    .then(employee => {
+                        document.getElementById('modal-title').textContent = 'Edit Employee';
+                        document.getElementById('employee-id').value = employee.id;
+                        document.getElementById('name').value = employee.name;
+                        document.getElementById('position').value = employee.position;
+
+                        const departmentSelect = document.getElementById('department');
+                        departmentSelect.value = employee.departmentId || '';
+
+                        populateManagerDropdown();
+                        const managerSelect = document.getElementById('manager');
+                        managerSelect.value = employee.managerId || '';
+
+                        const employeeSkills = Array.isArray(employee.skills) ? employee.skills : [];
+                        loadSkillsDropdown(employee.skills || []);
+
+                        employeeModal.style.display = 'block';
+                    })
+                    .catch(error => {
+                        showToast('Error: ' + error.message, 'error');
+                        console.error('Error fetching employee details:', error);
+                    });
+            }
+
+            function openDeleteConfirmation(id) {
+                currentEmployeeId = id;
+                confirmModal.style.display = 'block';
+            }
+
+            function toggleDebugPanel() {
+                const panel = document.getElementById('debug-panel');
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            }
+
+            document.addEventListener('keydown', function (event) {
+                if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+                    toggleDebugPanel();
+                    event.preventDefault();
+                }
+            });
+
+            function restoreCurrentView() {
+                if (currentView === 'tree') {
+                    treeViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                    treeContainer.style.display = 'flex';
+                    gridContainer.style.display = 'none';
+                } else {
+                    gridViewBtn.classList.add('active');
+                    treeViewBtn.classList.remove('active');
+                    gridContainer.style.display = 'grid';
+                    treeContainer.style.display = 'none';
+                }
+            }
+
+            // Department functionality
+            const departmentModal = document.getElementById('department-modal');
+            const addDepartmentBtn = document.getElementById('add-department-btn');
+            const closeDepartmentModal = document.getElementById('close-department-modal');
+            const departmentForm = document.getElementById('department-form');
+            const cancelDepartmentBtn = document.getElementById('cancel-department-btn');
+
+            addDepartmentBtn.addEventListener('click', function() {
+                document.getElementById('department-modal-title').textContent = 'Add New Department';
+                resetDepartmentForm();
+                departmentModal.style.display = 'block';
+            });
+
+            closeDepartmentModal.addEventListener('click', function() {
+                departmentModal.style.display = 'none';
+            });
+
+            cancelDepartmentBtn.addEventListener('click', function() {
+                departmentModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === departmentModal) {
+                    departmentModal.style.display = 'none';
+                }
+            });
+
+            function resetDepartmentForm() {
+                document.getElementById('department-id').value = '';
+                document.getElementById('department-name').value = '';
+            }
+
+            departmentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const departmentData = {
+                    name: document.getElementById('department-name').value
+                };
+
+                if (document.getElementById('department-id').value) {
+                    updateDepartment(departmentData);
+                } else {
+                    addDepartment(departmentData);
+                }
+            });
+
+            function addDepartment(departmentData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can add departments', 'error');
+                    return;
+                }
+
+                document.getElementById('save-department-btn').innerHTML = '<span class="spinner"></span> Saving...';
+                document.getElementById('save-department-btn').disabled = true;
+
+                fetch('/api/Department', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(departmentData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    departmentModal.style.display = 'none';
+                    showToast('Department added successfully!', 'success');
+                    fetchDepartments();
+                    fetchEmployeeTree();
+                })
+                .catch(error => {
+                    showToast('Error: ' + (error.message || 'Failed to add department'), 'error');
+                })
+                .finally(() => {
+                    document.getElementById('save-department-btn').innerHTML = 'Save';
+                    document.getElementById('save-department-btn').disabled = false;
+                });
+            }
+
+            function updateDepartment(departmentData) {
+                if (!isAdmin) {
+                    showToast('Only administrators can update departments', 'error');
+                    return;
+                }
+
+                const departmentId = document.getElementById('department-id').value;
+                if (!departmentId) {
+                    showToast('Error: No department ID found', 'error');
+                    return;
+                }
+
+                departmentData.id = parseInt(departmentId);
+
+                document.getElementById('save-department-btn').innerHTML = '<span class="spinner"></span> Saving...';
+                document.getElementById('save-department-btn').disabled = true;
+
+                fetch(`/api/Department/${departmentData.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(departmentData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update department');
+                    }
+                    departmentModal.style.display = 'none';
+                    showToast('Department updated successfully!', 'success');
+                    fetchDepartments();
+                    fetchEmployeeTree();
+                })
+                .catch(error => {
+                    showToast('Error: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    document.getElementById('save-department-btn').innerHTML = 'Save';
+                    document.getElementById('save-department-btn').disabled = false;
+                });
             }
         });
-
-        function updateUIForAdminStatus() {
-            const adminElements = document.querySelectorAll('.admin-only');
-            adminElements.forEach(el => {
-                el.style.display = isAdmin ? '' : 'none';
-            });
-        }
     </script>
 </body>
-</html> 
+
+</html>
